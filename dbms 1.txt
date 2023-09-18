@@ -1,0 +1,159 @@
+***********************************************************************************
+Name     : Jebin Shaju
+Class    : CSE B
+Semester : S5
+Roll No  : 33
+***********************************************************************************
+
+
+***********************************************************************************
+		   I. FAMILARISATION OF SQL COMMANDS (Set 1)
+***********************************************************************************
+1) SQL> create table student50 (Name varchar(12),RollNo number(3),Age number(3),Branch varchar(6));
+SQL> insert into student50 (Name,RollNo,Age,Branch) values ('Reema Devi',111,16,'CS');
+SQL> insert into student50 (Name,RollNo,Age,Branch) values ('Anil Kumar',201,18,'CS');
+SQL> insert into student50 (Name,RollNo,Age,Branch) values ('Ramesh V',202,19,'ME');
+SQL> insert into student50 (Name,RollNo,Age,Branch) values ('John Paul',103,17,'EC');
+SQL> insert into student50 (Name,RollNo,Age,Branch) values ('Sachin Gaur',301,18,'ME');
+
+NAME             ROLLNO        AGE BRANCH
+------------ ---------- ---------- ------
+Reema Devi          111         16 CS
+Anil Kumar          201         18 CS
+Ramesh V            202         19 ME
+John Paul           103         17 EC
+Sachin Gaur         301         18 ME
+
+2) SQL> create table distributor50 (Dcode number(3),Codename varchar(15),Amount number(7),Limit number(8));
+SQL> insert into distributor50 (Dcode,Codename,Amount,Limit) values (207,'Bluestar LTD',78000,100000);
+SQL> insert into distributor50 (Dcode,Codename,Amount,Limit) values (202,'HCL LTD',80000,100000);
+SQL> insert into distributor50 (Dcode,Codename,Amount,Limit) values (150,'Micro Systems',60000,80000);
+SQL> insert into distributor50 (Dcode,Codename,Limit) values (160,'PHI systems',90000);
+SQL> insert into distributor50 (Dcode,Codename,Amount,Limit) values (203,'Soft agency',80000,90000);
+
+
+SQL> select * from distributor50;
+
+     DCODE CODENAME            AMOUNT      LIMIT
+---------- --------------- ---------- ----------
+       207 Bluestar LTD         78000     100000
+       202 HCL LTD              80000     100000
+       150 Micro Systems        60000      80000
+       160 PHI systems                     90000
+       203 Soft agency          80000      90000
+
+3) SQL> create table agencies50 (Agcode number(3),Agname varchar(15),Amount number(7),AgLimit number(8));
+SQL> insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (401,'Nath and Co',2500 ,10000);
+SQL> insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (402,'Ram Sons',3600,10000);
+SQL> insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (403,'Krishna Stores',4000,15000);
+SQL> insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (409,'Kantt Mart',3279,10000);
+SQL> insert into agencies50 (Agcode,Agname,AgLimit) values (407,'Paico',10000);
+
+SQL> select * from agencies50;
+
+    AGCODE AGNAME              AMOUNT    AGLIMIT
+---------- --------------- ---------- ----------
+       401 Nath and Co           2500      10000
+       402 Ram Sons              3600      10000
+       403 Krishna Stores        4000      15000
+       409 Kantt Mart            3279      10000
+       407 Paico                           10000
+
+4) SQL> alter table student50 add (Totmarks number(5));
+SQL> update student50 set Totmarks = 99 where ROLLNO = 111;
+SQL> update student50 set Totmarks = 95 where ROLLNO = 201;
+SQL> update student50 set Totmarks = 93 where ROLLNO = 202;
+SQL> update student50 set Totmarks = 91 where ROLLNO = 103;
+SQL> update student50 set Totmarks = 89 where ROLLNO = 301;
+
+SQL> select * from student50;
+
+NAME             ROLLNO        AGE BRANCH   TOTMARKS
+------------ ---------- ---------- ------ ----------
+Reema Devi          111         16 CS             99
+Anil Kumar          201         18 CS             95
+Ramesh V            202         19 ME             93
+John Paul           103         17 EC             91
+Sachin Gaur         301         18 ME             89
+
+5) SQL> update agencies50 set AMOUNT = 5000 where AGCODE = 403;
+
+1 row updated.
+
+6) SQL> delete from distributor50 where Amount<70000;
+
+1 row deleted.
+
+SQL> select * from distributor50;
+
+     DCODE CODENAME            AMOUNT      LIMIT
+---------- --------------- ---------- ----------
+       207 Bluestar LTD         78000     100000
+       202 HCL LTD              80000     100000
+       160 PHI systems                     90000
+       203 Soft agency          80000      90000
+
+7) SQL> select agcode, agname from agencies50 order by amount desc; 
+
+
+    AGCODE AGNAME
+---------- ---------------
+       407 Paico
+       403 Krishna Stores
+       402 Ram Sons
+       409 Kantt Mart
+       401 Nath and Co
+
+8) SQL> select agname from agencies50 where amount<4000;
+
+
+AGNAME
+---------------
+Nath and Co
+Ram Sons
+Kantt Mart
+
+9) SQL> select name as studentname,rollno as student_rollno from student50;
+
+
+STUDENTNAME  STUDENT_ROLLNO
+------------ --------------
+Reema Devi              111
+Anil Kumar              201
+Ramesh V                202
+John Paul               103
+Sachin Gaur             301
+
+10) SQL> select * from student50 where branch = 'CS';
+
+
+NAME             ROLLNO        AGE BRANCH   TOTMARKS
+------------ ---------- ---------- ------ ----------
+Reema Devi          111         16 CS             99
+Anil Kumar          201         18 CS             95
+
+
+11) SQL> update distributor50 set limit = 150000 , amount = 10000 where limit = 100000;
+
+
+     DCODE CODENAME            AMOUNT      LIMIT
+---------- --------------- ---------- ----------
+       207 Bluestar LTD         10000     150000
+       202 HCL LTD              10000     150000
+       160 PHI systems                     90000
+       203 Soft agency          80000      90000
+
+
+
+
+12) SQL> select avg(totmarks) as averege_mark from student50;
+
+AVEREGE_MARK
+------------
+        93.4
+
+
+
+
+	
+

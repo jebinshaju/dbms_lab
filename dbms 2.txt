@@ -1,0 +1,179 @@
+***********************************************************************************
+Name     : Jebin Shaju
+Class    : CSE B
+Semester : S5
+Roll No  : 33
+***********************************************************************************
+
+
+***********************************************************************************
+		   I. FAMILARISATION OF SQL COMMANDS (Set 2)
+***********************************************************************************
+
+SQL>  create table employee50(Eno varchar(3) primary key,ename varchar(10) not null, 
+salary number(5),dno varchar(3) REFERENCES department50, mngrno varchar(3),
+doj date, job varchar(10), address varchar(10), city varchar(20),
+pincode number(6) , check (salary <>0),CHECK(eno like'E%'),
+check(city in('Cochin','Bombay','Madras','Delhi')) );
+
+
+
+SQL>  create table department50(dno varchar(3) primary key,dname varchar(10) not null,
+cnt_emp number(3),check(cnt_emp <15), dept_hod varchar(10));
+
+
+SQL>  insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) 
+values ('E01', 'Johan',10000,'D10','E04','1-jan-1996','sales','aluva','Cochin',653821 );
+SQL>  insert into employee50 (Eno,ename,salary,dno ,doj , job , address,city ,pincode) 
+values ('E02', 'Nevin',7000,'D20','1-jan-2000','clerk','andheri','Bombay',653231 );
+SQL>  insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) 
+values ('E03', 'Binu',12000,'D30','E20','1-jan-2006','cleaner','kora','Madras',653823 );
+SQL>  insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) 
+values ('E04', 'Samon',5000,'D10','E21','1-jan-1999','baker','varnasi','Delhi',653577 );
+SQL>  insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) 
+values ('E05', 'Kevin',19000,'D30','E30','1-jan-1996','sales','vyttila','Cochin',653467 );
+
+
+SQL>  insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D10', 'civil' ,10 ,'jerald' );
+SQL>  insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D20', 'cs' ,11 ,'judin' );
+SQL>  insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D30', 'mechanical' ,9 ,'thomas' );
+SQL>  insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D40', 'ec' ,8 ,'jebin' );
+SQL>  insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D50', 'eee' ,14 ,'saalem' );
+
+
+
+
+SQL>  select * from employee50;
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E02 Nevin            7000 D20     01-JAN-00 clerk      andheri    Bombay                   653231
+E03 Binu            12000 D30 E20 01-JAN-06 cleaner    kora       Madras                   653823
+E04 Samon            5000 D10 E21 01-JAN-99 baker      varnasi    Delhi                    653577
+E05 Kevin           19000 D30 E30 01-JAN-96 sales      vyttila    Cochin                   653467
+E01 Johan           10000 D10 E04 01-JAN-96 sales      aluva      Cochin                   653821
+
+SQL> select * from department50;
+
+DNO DNAME         CNT_EMP DEPT_HOD
+--- ---------- ---------- ----------
+D10 civil              10 jerald
+D20 cs                 11 judin
+D30 mechanical          9 thomas
+D40 ec                  8 jebin
+D50 eee                14 saalem
+
+
+a) SQL> select * from employee50 where doj> '1-jan-1998' and dno ='D10';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E04 Samon            5000 D10 E21 01-JAN-99 baker      varnasi    Delhi                    653577
+
+
+b) SQL> select * from employee50 where dno <> 'D30';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E02 Nevin            7000 D20     01-JAN-00 clerk      andheri    Bombay                   653231
+E04 Samon            5000 D10 E21 01-JAN-99 baker      varnasi    Delhi                    653577
+E01 Johan           10000 D10 E04 01-JAN-96 sales      aluva      Cochin                   653821
+
+
+
+c) SQL> select ename from employee50 where job = 'sales';
+
+ENAME
+----------
+Kevin
+Johan
+
+d) SQL> select ename from employee50 where mngrno is null;
+
+ENAME
+----------
+Nevin
+
+
+e) SQL> select * from employee50 where ename like'J_n%';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E01 Jonah           10000 D10 E04 01-JAN-96 sales      aluva      Cochin                   653821
+
+
+f) SQL> select * from employee50 where doj between '1-jan-2000' and '31-dec-2000';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E02 Nevin            7000 D20     01-JAN-00 clerk      andheri    Bombay                   653231
+
+
+
+g) SQL> select 'Every year '|| ename ||' earns ' || salary from employee50;
+
+'EVERYYEAR'||ENAME||'EARNS'||SALARY
+--------------------------------------------------------------------
+Every year Nevin earns 7000
+Every year Binu earns 12000
+Every year Samon earns 5000
+Every year Kevin earns 19000
+Every year Jonah earns 10000
+
+h) SQL> select count(*) from employee50;
+
+  COUNT(*)
+----------
+         5
+
+
+i) SQL> select min(salary), dname from employee50 e, department50 d where e.dno = d.dno group by dname;
+
+
+MIN(SALARY) DNAME
+----------- ----------
+       5000 civil
+       7000 cs
+      12000 mechanical
+
+
+
+j) SQL> select min(salary), dname from employee50 e, department50 d where e.dno = d.dno group by dname 
+having min(salary) > 7000;
+
+MIN(SALARY) DNAME
+----------- ----------
+      12000 mechanical
+
+
+
+k) SQL> select min(salary), dname from employee50 e, department50 d where e.dno = d.dno and mngrn
+ot null group by dname;
+
+MIN(SALARY) DNAME
+----------- ----------
+       5000 civil
+      12000 mechanical
+
+
+
+l) SQL> select ename, dname from employee50 e, department50 d where e.dno = d.dno and job = 'clerk';
+
+ENAME      DNAME
+---------- ----------
+Nevin      cs
+
+
+
+m) SQL>  select ename, TO_CHAR(doj,'DD/MM/YYYY') doj from employee50;
+
+ENAME      DOJ
+---------- ----------
+Nevin      01/01/2000
+Binu       01/01/2006
+Samon      01/01/1999
+Kevin      01/01/1996
+Jonah      01/01/1996
+
+	
+
