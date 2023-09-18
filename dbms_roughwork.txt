@@ -1,0 +1,441 @@
+DATABASE MANGEMENT SYSTEMS LAB - S5CSE 
+I. FAMILARISATION OF SQL COMMANDS (Set 1)
+1. Create a Student table with the following fields
+Name, Roll no, Age, Branch and insert the following data into the table.
+Name Roll no Age Branch
+Anil Kumar 201 18 CS
+Ramesh V. 202 19 ME
+John Paul 103 17 EC
+Reema Dev 111 16 CS
+Sachin Gaur 301 18 ME
+2. Create table called ‘Distributor’ with columns Dcode, Codename, Amount, Limit
+and insert the following data.
+Dcode Codename Amount Limit
+207 BlueStar Ltd 78,000 1,00,000
+202 HCL Ltd 80,000 1,00,000
+150 Microsystems 60,000 80,000
+160 PHI Systems - 90,000
+203 Soft Agency 80,000 90,000
+3. Create a table called ‘Agencies’ with columns
+Agcode, Agname, Amount, Aglimit and insert the following data into the table
+Agcode Agname Amount Aglimit
+401 Nath & Co 2500 10,000
+402 Ram Sons 3600 10,000
+403 Krishna Stores 4000 15,000
+409 Kantt Mart 3279 10,000
+407 Paico - 10,000
+4. Alter the structure of table student by adding a column called Totmarks and insert 
+values into the added field
+5. Update the ‘Agencies table, set amount field to 5000 corresponding to Agcode = 403.
+6. Delete records from distributor table, whose amount is less than 70,000.
+7. Display the Agcode and Agname from table Agencies in reverse order of their 
+amount.
+8. Display all Agency names for amount less than 4000 from table ‘Agencies’.
+9. Display the student info from student table renaming the fields name as studentname, 
+roll no as student_rollno.
+10. Display the student info only in CS.
+11. Update the limit field and amount field of distributor table to 1, 50,000 and 10,000 
+respectively whose limit is 1,00,000.
+12. Display the average of total marks of the students
+
+
+
+create table student50 (Name varchar(12),RollNo number(3),Age number(3),Branch varchar(6));
+insert into student50 (Name,RollNo,Age,Branch) values ('Reema Devi',111,16,'CS');
+insert into student50 (Name,RollNo,Age,Branch) values ('Anil Kumar',201,18,'CS');
+insert into student50 (Name,RollNo,Age,Branch) values ('Ramesh V',202,19,'ME');
+insert into student50 (Name,RollNo,Age,Branch) values ('John Paul',103,17,'EC');
+insert into student50 (Name,RollNo,Age,Branch) values ('Sachin Gaur',301,18,'ME');
+
+NAME             ROLLNO        AGE BRANCH
+------------ ---------- ---------- ------
+Reema Devi          111         16 CS
+Anil Kumar          201         18 CS
+Ramesh V            202         19 ME
+John Paul           103         17 EC
+Sachin Gaur         301         18 ME
+
+create table distributor50 (Dcode number(3),Codename varchar(15),Amount number(7),Limit number(8));
+insert into distributor50 (Dcode,Codename,Amount,Limit) values (207,'Bluestar LTD',78000,100000);
+insert into distributor50 (Dcode,Codename,Amount,Limit) values (202,'HCL LTD',80000,100000);
+insert into distributor50 (Dcode,Codename,Amount,Limit) values (150,'Micro Systems',60000,80000);
+insert into distributor50 (Dcode,Codename,Limit) values (160,'PHI systems',90000);
+insert into distributor50 (Dcode,Codename,Amount,Limit) values (203,'Soft agency',80000,90000);
+
+
+SQL> select * from distributor50;
+
+     DCODE CODENAME            AMOUNT      LIMIT
+---------- --------------- ---------- ----------
+       207 Bluestar LTD         78000     100000
+       202 HCL LTD              80000     100000
+       150 Micro Systems        60000      80000
+       160 PHI systems                     90000
+       203 Soft agency          80000      90000
+
+create table agencies50 (Agcode number(3),Agname varchar(15),Amount number(7),AgLimit number(8));
+insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (401,'Nath and Co',2500 ,10000);
+insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (402,'Ram Sons',3600,10000);
+insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (403,'Krishna Stores',4000,15000);
+insert into agencies50 (Agcode,Agname,Amount,AgLimit) values (409,'Kantt Mart',3279,10000);
+insert into agencies50 (Agcode,Agname,AgLimit) values (407,'Paico',10000);
+
+SQL> select * from agencies50;
+
+    AGCODE AGNAME              AMOUNT    AGLIMIT
+---------- --------------- ---------- ----------
+       401 Nath and Co           2500      10000
+       402 Ram Sons              3600      10000
+       403 Krishna Stores        4000      15000
+       409 Kantt Mart            3279      10000
+       407 Paico                           10000
+
+alter table student50 add (Totmarks number(5));
+update student50 set Totmarks = 99 where ROLLNO = 111;
+update student50 set Totmarks = 95 where ROLLNO = 201;
+update student50 set Totmarks = 93 where ROLLNO = 202;
+update student50 set Totmarks = 91 where ROLLNO = 103;
+update student50 set Totmarks = 89 where ROLLNO = 301;
+
+SQL> select * from student50;
+
+NAME             ROLLNO        AGE BRANCH   TOTMARKS
+------------ ---------- ---------- ------ ----------
+Reema Devi          111         16 CS             99
+Anil Kumar          201         18 CS             95
+Ramesh V            202         19 ME             93
+John Paul           103         17 EC             91
+Sachin Gaur         301         18 ME             89
+
+update agencies50 set AMOUNT = 5000 where AGCODE = 403;
+
+1 row updated.
+
+
+
+delete from distributor50 where Amount<70000;
+
+SQL> delete from distributor50 where Amount<70000;
+
+1 row deleted.
+
+SQL> select * from distributor50;
+
+     DCODE CODENAME            AMOUNT      LIMIT
+---------- --------------- ---------- ----------
+       207 Bluestar LTD         78000     100000
+       202 HCL LTD              80000     100000
+       160 PHI systems                     90000
+       203 Soft agency          80000      90000
+
+select agcode, agname from agencies50 order by amount desc; 
+
+
+    AGCODE AGNAME
+---------- ---------------
+       407 Paico
+       403 Krishna Stores
+       402 Ram Sons
+       409 Kantt Mart
+       401 Nath and Co
+
+select agname from agencies50 where amount<4000;
+
+
+AGNAME
+---------------
+Nath and Co
+Ram Sons
+Kantt Mart
+
+select name as studentname,rollno as student_rollno from student50;
+
+
+STUDENTNAME  STUDENT_ROLLNO
+------------ --------------
+Reema Devi              111
+Anil Kumar              201
+Ramesh V                202
+John Paul               103
+Sachin Gaur             301
+
+select * from student50 where branch = 'CS';
+
+
+NAME             ROLLNO        AGE BRANCH   TOTMARKS
+------------ ---------- ---------- ------ ----------
+Reema Devi          111         16 CS             99
+Anil Kumar          201         18 CS             95
+
+
+update distributor50 set limit = 150000 , amount = 10000 where limit = 100000;
+
+
+
+     DCODE CODENAME            AMOUNT      LIMIT
+---------- --------------- ---------- ----------
+       207 Bluestar LTD         10000     150000
+       202 HCL LTD              10000     150000
+       160 PHI systems                     90000
+       203 Soft agency          80000      90000
+
+
+
+
+select avg(totmarks) as averege_mark from student50;
+AVEREGE_MARK
+------------
+        93.4
+
+
+
+
+
+
+
+
+
+
+I. FAMILARISATION OF SQL COMMANDS (Set 2)
+1. EMPLOYEE
+ENO Primary key, and first letter is E
+ENAME Not Null
+SALARY Should not be zero
+DNO Foreign key referencing DNO of DEPARTMENT
+MNGRNO
+DOJ
+JOB
+ADDRESS
+CITY Values must be Cochin, Bombay, Madras, Delhi
+PINCODE
+Eno = employee number, dno = department number, mngrno = manager 
+number, doj = date of joining.
+2. DEPARTMENT
+DNO Primary Key
+DNAME Not Null
+CNT_EMP Should not be greater than 15
+DEPT_HOD
+Cnt_emp = employee count, dept_hod = head of the department
+I. Create Tables Employee and department with the corresponding fields and constraints given above. 
+a) List the name of Employees joined after 1- 1- 1998 and working in department number d10.
+b) List all employees working in department other than department number d30.
+c) List the name of employees working in department sales.
+d) List the name of employees who does not have a manager.
+e) List the employees whose names starts with ‘J’ and ‘N’ as third character.
+f) List all the employees joined during the year 2000.
+g) List the name of employees along with their annual salary, and also for each record, get the output,Every year <ename> earns <amount>
+h) Find the total number of employees in employee table.
+i) Display the minimum salary of various categories of employees.
+j) List the minimum salary of various categories of employees in various departments having minimum salary greater than 7,000.
+k) Find the minimum salary of manager in various departments.
+l) List the names of all clerks along with the names of departments.
+m) List the employee names and their date of joining in format dd/mm/yy.
+
+
+
+
+
+create table employee50(Eno varchar(3) primary key,ename varchar(10) not null, salary number(5),dno varchar(3) REFERENCES department50, mngrno varchar(3),
+ doj date, job varchar(10), 
+address varchar(10), 
+city varchar(20),pincode number(6) , check (salary <>0),CHECK(eno like'E%'),
+check(city in('Cochin','Bombay','Madras','Delhi')) );
+
+
+
+alter table employeee
+
+create table department50(dno varchar(3) primary key,dname varchar(10) not null,cnt_emp number(3),check(cnt_emp <15), dept_hod varchar(10));
+
+insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) values ('E01', 'Johan',10000,'D10','E04','1-jan-1996','sales','aluva','Cochin',653821 );
+insert into employee50 (Eno,ename,salary,dno ,doj , job , address,city ,pincode) values ('E02', 'Nevin',7000,'D20','1-jan-2000','clerk','andheri','Bombay',653231 );
+insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) values ('E03', 'Binu',12000,'D30','E20','1-jan-2006','cleaner','kora','Madras',653823 );
+insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) values ('E04', 'Samon',5000,'D10','E21','1-jan-1999','baker','varnasi','Delhi',653577 );
+insert into employee50 (Eno,ename,salary,dno,mngrno ,doj , job , address,city ,pincode) values ('E05', 'Kevin',19000,'D30','E30','1-jan-1996','sales','vyttila','Cochin',653467 );
+
+insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D10', 'civil' ,10 ,'jerald' );
+insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D20', 'cs' ,11 ,'judin' );
+insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D30', 'mechanical' ,9 ,'thomas' );
+insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D40', 'ec' ,8 ,'jebin' );
+insert into department50 (dno,dname,cnt_emp,dept_hod) values ('D50', 'eee' ,14 ,'saalem' );
+
+
+
+
+SQL>  select * from employee50;
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E02 Nevin            7000 D20     01-JAN-00 clerk      andheri    Bombay                   653231
+E03 Binu            12000 D30 E20 01-JAN-06 cleaner    kora       Madras                   653823
+E04 Samon            5000 D10 E21 01-JAN-99 baker      varnasi    Delhi                    653577
+E05 Kevin           19000 D30 E30 01-JAN-96 sales      vyttila    Cochin                   653467
+E01 Johan           10000 D10 E04 01-JAN-96 sales      aluva      Cochin                   653821
+
+SQL> select * from department50;
+
+DNO DNAME         CNT_EMP DEPT_HOD
+--- ---------- ---------- ----------
+D10 civil              10 jerald
+D20 cs                 11 judin
+D30 mechanical          9 thomas
+D40 ec                  8 jebin
+D50 eee                14 saalem
+
+
+SQL> select * from employee50 where doj> '1-jan-1998' and dno ='D10';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E04 Samon            5000 D10 E21 01-JAN-99 baker      varnasi    Delhi                    653577
+
+
+SQL> select * from employee50 where dno <> 'D30';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E02 Nevin            7000 D20     01-JAN-00 clerk      andheri    Bombay                   653231
+E04 Samon            5000 D10 E21 01-JAN-99 baker      varnasi    Delhi                    653577
+E01 Johan           10000 D10 E04 01-JAN-96 sales      aluva      Cochin                   653821
+
+
+
+SQL> select ename from employee50 where job = 'sales';
+
+ENAME
+----------
+Kevin
+Johan
+
+SQL> select ename from employee50 where mngrno is null;
+
+ENAME
+----------
+Nevin
+
+
+SQL> select * from employee50 where ename like'J_n%';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E01 Jonah           10000 D10 E04 01-JAN-96 sales      aluva      Cochin                   653821
+
+
+SQL> select * from employee50 where doj between '1-jan-2000' and '31-dec-2000';
+
+ENO ENAME          SALARY DNO MNG DOJ       JOB        ADDRESS    CITY                    PINCODE
+--- ---------- ---------- --- --- --------- ---------- ---------- -------------------- ----------
+E02 Nevin            7000 D20     01-JAN-00 clerk      andheri    Bombay                   653231
+
+
+
+SQL> select count(*) from employee50;
+
+  COUNT(*)
+----------
+         5
+
+select 'Every year '|| ename ||' earns ' || salary as salary details  from employee50;
+
+
+
+SQL> 
+SQL> select 'Every year '|| ename ||' earns ' || salary from employee50;
+
+'EVERYYEAR'||ENAME||'EARNS'||SALARY
+--------------------------------------------------------------------
+Every year Nevin earns 7000
+Every year Binu earns 12000
+Every year Samon earns 5000
+Every year Kevin earns 19000
+Every year Jonah earns 10000
+
+SQL> select count(*) from employee50;
+
+  COUNT(*)
+----------
+         5
+
+
+SQL> select min(salary), dname from employee50 e, department50 d where e.dno = d.dno group by dname;
+
+
+MIN(SALARY) DNAME
+----------- ----------
+       5000 civil
+       7000 cs
+      12000 mechanical
+
+
+
+SQL> select min(salary), dname from employee50 e, department50 d where e.dno = d.dno group by dname 
+having min(salary) > 7000;
+
+MIN(SALARY) DNAME
+----------- ----------
+      12000 mechanical
+
+
+select * from department50;
+
+
+
+SQL> select min(salary), dname from employee50 e, department50 d where e.dno = d.dno and mngrn
+ot null group by dname;
+
+MIN(SALARY) DNAME
+----------- ----------
+       5000 civil
+      12000 mechanical
+
+
+
+SQL> select ename, dname from employee50 e, department50 d where e.dno = d.dno and job = 'clerk';
+
+ENAME      DNAME
+---------- ----------
+Nevin      cs
+
+
+
+SQL>  select ename, TO_CHAR(doj,'DD/MM/YYYY') doj from employee50;
+
+ENAME      DOJ
+---------- ----------
+Nevin      01/01/2000
+Binu       01/01/2006
+Samon      01/01/1999
+Kevin      01/01/1996
+Jonah      01/01/1996
+
+
+pl/sql
+
+
+set serveroutput on;
+declare 
+m number (20) := 20;
+begin
+dbms_output.put_line('The number is' || m);
+end;
+
+set serveroutput on;
+declare 
+m number (20) := 20;
+n number (20) := 30;
+o number (20);
+begin
+o := m+n;
+dbms_output.put_line('The answer is ' || o);
+end;
+
+set serveroutput on;
+declare 
+m number (20);
+n number (20);
+o number (20);
+begin
+m := &m;
+n := &n;
+o := m+n;
+dbms_output.put_line('The answer is ' || o);
+end;
