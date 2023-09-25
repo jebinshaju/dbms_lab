@@ -476,31 +476,34 @@ The sum is 25
 
 
 set serveroutput on;
-declare 
-a number (20);
-b number (20);
-c number (20);
-begin
-a := &a;
-b := &b;
-c := &c;
+DECLARE
+  num1 NUMBER := 10;
+  num2 NUMBER := 5;
+  num3 NUMBER := 8;
+  greatest NUMBER;
+  smallest NUMBER;
+BEGIN
+  IF num1 >= num2 AND num1 >= num3 THEN
+    greatest := num1;
+  ELSIF num2 >= num1 AND num2 >= num3 THEN
+    greatest := num2;
+  ELSE
+    greatest := num3;
+  END IF;
 
-if a > b  and then
-if a > c then
-dbms_output.put_line('The greatest is ' || a);
-else
-dbms_output.put_line('The greatest is ' || c);
-end if;
-elsif b > a then
-if b > c then
-dbms_output.put_line('The greatest is ' || b);
-else 
-dbms_output.put_line('The greatest is ' || c);
-end if;
-else
-dbms_output.put_line('Two or more numbers are equal ');
-end if;
-end;
+  IF num1 <= num2 AND num1 <= num3 THEN
+    smallest := num1;
+  ELSIF num2 <= num1 AND num2 <= num3 THEN
+    smallest := num2;
+  ELSE
+    smallest := num3;
+  END IF;
+
+  DBMS_OUTPUT.PUT_LINE('The greatest number is: ' || greatest);
+  DBMS_OUTPUT.PUT_LINE('The smallest number is: ' || smallest);
+END;
+/
+
 
 
 Enter value for a: 23
