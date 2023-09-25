@@ -439,3 +439,200 @@ n := &n;
 o := m+n;
 dbms_output.put_line('The answer is ' || o);
 end;
+
+Enter value for m: 10
+old   6: m := &m;
+new   6: m := 10;
+Enter value for n: 20
+old   7: n := &n;
+new   7: n := 20;
+The answer is 30
+
+
+
+
+set serveroutput on;
+declare
+s number (20);
+n number (20);
+i number (20);
+begin
+n := &n;
+s := 0;
+n := n*2;
+for i in 1..n loop
+if (i mod 2) <> 0 then
+s := s+i;
+
+end if;
+end loop;
+dbms_output.put_line('The sum is ' || s);
+end;
+
+Enter value for n: 5
+old   6: n := &n;
+new   6: n := 5;
+The sum is 25
+
+
+set serveroutput on;
+declare 
+a number (20);
+b number (20);
+c number (20);
+begin
+a := &a;
+b := &b;
+c := &c;
+
+if a > b  and then
+if a > c then
+dbms_output.put_line('The greatest is ' || a);
+else
+dbms_output.put_line('The greatest is ' || c);
+end if;
+elsif b > a then
+if b > c then
+dbms_output.put_line('The greatest is ' || b);
+else 
+dbms_output.put_line('The greatest is ' || c);
+end if;
+else
+dbms_output.put_line('Two or more numbers are equal ');
+end if;
+end;
+
+
+Enter value for a: 23
+old   6: a := &a;
+new   6: a := 23;
+Enter value for b: 43
+old   7: b := &b;
+new   7: b := 43;
+Enter value for c: 65
+old   8: c := &c;
+new   8: c := 65;
+The greatest is 65
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+set serveroutput on;
+declare
+i number (20);
+n number (20);
+f number (20);
+begin
+n := &n;
+f := 1;
+for i in 1..n loop
+f := f*i;
+end loop;
+dbms_output.put_line('The factorial of ' || n ||' is '|| f );
+end;
+
+
+Enter value for n: 5
+old   6: n := &n;
+new   6: n := 5;
+The factorial of 5 is 120
+
+PL/SQL procedure successfully completed.
+
+
+set serveroutput on;
+declare
+n number (20);
+i number (20);
+a number (20);
+b number (20);
+c number (20);
+begin
+a := 0;
+b :=1;
+n :=&n;
+n := n-2;
+dbms_output.put_line(a);
+dbms_output.put_line(b);
+for i in 1..n loop
+c :=a + b;
+dbms_output.put_line(c);
+a := b;
+b := c;
+end loop;
+end;
+
+
+Enter value for n: 6
+old  10: n :=&n;
+new  10: n :=6;
+0
+1
+1
+2
+3
+5
+
+PL/SQL procedure successfully completed.
+
+
+
+set severoutput on;
+declare
+a number (20);
+d number (20);
+begin
+a := &amount;
+
+if a > 5000 then
+d := 0.20*a;
+a := a - 0.20*a;
+
+dbms_output.put_line('Discount available is ' || d);
+dbms_output.put_line('Price after discount ' || a);
+
+else
+dbms_output.put_line('Amount to be payed is ' || a);
+end if;
+end;
+
+
+Enter value for amount: 6000
+old   5: a := &amount;
+new   5: a := 6000;
+Discount available is 1200
+Price after discount 4800
+
+PL/SQL procedure successfully completed.
+
+
+
+set serveroutput on;
+declare
+str varchar(20);
+i number(20);
+rev varchar(20);
+len number(20);
+begin
+str := '&string';
+len := Length(str);
+for i in reverse 1..len loop
+                     
+rev := rev || substr(str, i, 1);
+end loop;
+  
+dbms_output.put_line('Reverse of string is ' || rev);
+
+end;
+
+
+
+Enter value for string: jebin
+old   7: str := '&string';
+new   7: str := 'jebin';
+Reverse of string is nibej
+
+PL/SQL procedure successfully completed.
