@@ -477,12 +477,16 @@ The sum is 25
 
 set serveroutput on;
 DECLARE
-  num1 NUMBER := 10;
-  num2 NUMBER := 5;
-  num3 NUMBER := 8;
+  num1 NUMBER;
+  num2 NUMBER;
+  num3 NUMBER;
   greatest NUMBER;
   smallest NUMBER;
 BEGIN
+
+num1 := &num1;
+num2 := &num2;
+num3 := &num3;
   IF num1 >= num2 AND num1 >= num3 THEN
     greatest := num1;
   ELSIF num2 >= num1 AND num2 >= num3 THEN
@@ -506,18 +510,21 @@ END;
 
 
 
-Enter value for a: 23
-old   6: a := &a;
-new   6: a := 23;
-Enter value for b: 43
-old   7: b := &b;
-new   7: b := 43;
-Enter value for c: 65
-old   8: c := &c;
-new   8: c := 65;
-The greatest is 65
+
+Enter value for num1: 23
+old   9: num1 := &num1;
+new   9: num1 := 23;
+Enter value for num2: 54
+old  10: num2 := &num2;
+new  10: num2 := 54;
+Enter value for num3: 5
+old  11: num3 := &num3;
+new  11: num3 := 5;
+The greatest number is: 54
+The smallest number is: 5
 
 PL/SQL procedure successfully completed.
+
 
 
 
@@ -639,3 +646,435 @@ new   7: str := 'jebin';
 Reverse of string is nibej
 
 PL/SQL procedure successfully completed.
+
+
+
+
+
+
+create table temp50 (no number);
+set serveroutput on;
+declare
+i number(20);
+
+begin
+
+for i in 1..15 loop
+insert into temp50 (no) values (i);
+end loop
+commit;
+end;
+/
+
+
+SQL> select * from temp50;
+
+        NO
+----------
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+        10
+        11
+        12
+        13
+        14
+        15
+
+15 rows selected.
+
+
+
+
+
+create table even50 (no number);
+create table odd50 (no number);
+set serveroutput on;
+declare
+i number(20);
+begin
+
+for i in 1..25 loop
+if (i mod 2 <> 0) then
+insert into odd50 (no) values(i);
+else
+insert into even50 (no) values (i);
+end if;
+end loop;
+commit;
+end;
+/
+
+
+
+SQL> select * from even50;
+
+        NO
+----------
+         2
+         4
+         6
+         8
+        10
+        12
+        14
+        16
+        18
+        20
+        22
+        24
+
+12 rows selected.
+
+SQL> select * from odd50;
+
+        NO
+----------
+         1
+         3
+         5
+         7
+         9
+        11
+        13
+        15
+        17
+        19
+        21
+        23
+        25
+
+13 rows selected.
+
+
+
+
+create table table_income50 (ename varchar(20),salary number(20));
+insert into table_income50 (ename,salary) values ('kuttapi',30000);
+insert into table_income50 (ename,salary) values ('ramesh',3000);
+insert into table_income50 (ename,salary) values ('ramesh',9000);
+insert into table_income50 (ename,salary) values ('shasi',7000);
+insert into table_income50 (ename,salary) values ('ramanan',9000);
+
+
+set serveroutput on;
+declare 
+s number(20);
+
+begin
+
+select salary into s from table_income50 where ename = 'ramesh';
+
+if (s >= 8000) then
+	s := s+(s*0.2);
+elsif (s >= 5000 and s < 8000) then
+	s := s+(s*0.1);
+else
+	s := s+(s*0.05);
+end if;
+update table_income50 set salary = s where ename = 'ramesh';
+end;
+/
+
+ update table_income50 set ename = 'ram' where salary = 3000;
+
+
+SQL> select * from table_income50;
+
+ENAME                    SALARY
+-------------------- ----------
+kuttapi                   30000
+ram                        3000
+ramesh                     9000
+shasi                      7000
+ramanan                    9000
+
+SQL> select * from table_income50;
+
+ENAME                    SALARY
+-------------------- ----------
+kuttapi                   30000
+ram                        3000
+ramesh                    10800
+shasi                      7000
+ramanan                    9000
+
+
+
+
+create table account50 (accno number,name varchar(20), balance number);
+
+insert into account50 (accno,name,balance) values (01,'Jerald',10790);
+insert into account50 (accno,name,balance) values (02'Judin',21090);
+insert into account50 (accno,name,balance) values (03,'Johan',87790);
+insert into account50 (accno,name,balance) values (04,'Jebin',1070);
+insert into account50 (accno,name,balance) values (05,'kevin',7590);
+
+
+
+SQL> select * from account50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+         1 Jerald                    10790
+         3 Johan                     87790
+         4 Jebin                      1070
+         5 kevin                      7590
+
+set serveroutput on;
+declare
+
+amt number;
+b number;
+limit number;
+acc number;
+bal number;
+temp number;
+begin
+
+acc := &account;
+amt := &Amount;
+
+select balance into b from account50 where accno = acc;
+limit := 1000;
+bal := b-amt;
+if amt < b and bal >= limit then
+	
+	dbms_output.put_line('Amount with drawed is: ' || amt);
+	b := b-amt;
+	update account50 set balance = b where accno = acc;
+
+elsif amt > b then
+
+	amt := b - limit;
+
+	dbms_output.put_line('Amount will be less than limit when withdrawn/ so ammount avilable is : ' || amt);
+	dbms_output.put_line('Minimum balance is : ' || limit);
+	update account50 set balance = limit where accno = acc;
+
+elsif amt < b and bal <= limit then
+	amt := b - limit;
+
+	dbms_output.put_line('Amount will be less than limit when withdrawn/ so ammount avilable is : ' || amt);
+	dbms_output.put_line('Minimum balance is : ' || limit);
+	update account50 set balance = limit where accno = acc;
+
+end if;
+end;
+/
+
+
+Enter value for account: 4
+old  11: acc := &account;
+new  11: acc := 4;
+Enter value for amount: 2000
+old  12: amt := &Amount;
+new  12: amt := 2000;
+Amount will be less than limit when withdrawn/ so ammount avilable is : 70
+Minimum balance is : 1000
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from account50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+         1 Jerald                    10790
+         3 Johan                     87790
+         4 Jebin                      1000
+         5 kevin                      7590
+
+
+
+Enter value for account: 1
+old  11: acc := &account;
+new  11: acc := 1;
+Enter value for amount: 5000
+old  12: amt := &Amount;
+new  12: amt := 5000;
+Amount with drawed is: 5000
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from account50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+         1 Jerald                     5790
+         3 Johan                     87790
+         4 Jebin                      1000
+         5 kevin                      7590
+
+
+
+Enter value for account: 4
+old  11: acc := &account;
+new  11: acc := 4;
+Enter value for amount: 1000
+old  12: amt := &Amount;
+new  12: amt := 1000;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from account50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+         1 Jerald                     5790
+         3 Johan                     87790
+         4 Jebin                      1000
+         5 kevin                      7590
+
+Enter value for account: 5
+old  11: acc := &account;
+new  11: acc := 5;
+Enter value for amount: 10000
+old  12: amt := &Amount;
+new  12: amt := 10000;
+Amount will be less than limit when withdrawn/ so ammount avilable is : 6590
+Minimum balance is : 1000
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from account50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+         1 Jerald                     5790
+         3 Johan                     87790
+         4 Jebin                      1000
+         5 kevin                      1000
+
+
+
+
+
+
+
+create table bill50 (consumer_no number,present_reading number, past_reading number,units number,charge number);
+insert into bill50 (consumer_no,present_reading,past_reading) values (1,300,290);
+insert into bill50 (consumer_no,present_reading,past_reading) values (2,550,400);
+insert into bill50 (consumer_no,present_reading,past_reading) values (3,500,450);
+insert into bill50 (consumer_no,present_reading,past_reading) values (4,900,200);
+
+SQL> select * from bill50;
+
+CONSUMER_NO PRESENT_READING PAST_READING      UNITS     CHARGE
+----------- --------------- ------------ ---------- ----------
+          1             300          290
+          2             550          400
+          3             500          450
+          4             900          200
+
+
+set serveroutput on;
+declare
+customer_number number;
+past number;
+present number;
+unit number;
+charg number;
+
+begin
+
+customer_number := &customer_number;
+
+select present_reading into present from bill50 where consumer_no = customer_number;
+select past_reading into past from bill50 where consumer_no = customer_number;
+
+unit := present - past;
+
+update bill50 set units = unit where consumer_no = customer_number;
+
+if unit < 20 then
+
+	charg := 0;
+	update bill50 set charge = charg where consumer_no = customer_number;
+
+elsif unit >=20 and unit <=100 then
+
+	charg := unit*50;
+	update bill50 set charge = charg where consumer_no = customer_number;
+
+elsif unit >=101 and unit <=300 then
+	
+	unit := unit - 100;
+	charg := unit*50 + 50*100;
+	update bill50 set charge = charg where consumer_no = customer_number;
+
+elsif unit >=301 and unit <=500 then
+	
+	unit := unit - 300;
+	charg := unit*50 + 50*100 + 200*75;
+	update bill50 set charge = charg where consumer_no = customer_number;
+
+else
+	
+	unit := unit - 500;
+	charg := unit*50 + 50*100 + 200*75 + 200*150;
+	update bill50 set charge = charg where consumer_no = customer_number;
+
+end if;
+
+
+select units into unit from bill50 where consumer_no = customer_number;
+select charge into charg from bill50 where consumer_no = customer_number;
+dbms_output.put_line('CONSUMER NO : ' || customer_number);
+dbms_output.put_line('PRESENT READING : ' || present);
+dbms_output.put_line('PAST READING : ' || past);
+dbms_output.put_line('UNITS TAKEN : ' || unit);
+dbms_output.put_line('CHARGE : ' || charg);
+end;
+
+ 58  /
+Enter value for customer_number: 1
+old  10: customer_number := &customer_number;
+new  10: customer_number := 1;
+CONSUMER NO : 1
+PRESENT READING : 300
+PAST READING : 290
+UNITS TAKEN : 10
+CHARGE : 0
+
+PL/SQL procedure successfully completed.
+
+ 58  /
+Enter value for customer_number: 2
+old  10: customer_number := &customer_number;
+new  10: customer_number := 2;
+CONSUMER NO : 2
+PRESENT READING : 550
+PAST READING : 400
+UNITS TAKEN : 150
+CHARGE : 7500
+
+PL/SQL procedure successfully completed.
+
+ 58  /
+Enter value for customer_number: 4
+old  10: customer_number := &customer_number;
+new  10: customer_number := 4;
+CONSUMER NO : 4
+PRESENT READING : 900
+PAST READING : 200
+UNITS TAKEN : 700
+CHARGE : 60000
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from bill50;
+
+CONSUMER_NO PRESENT_READING PAST_READING      UNITS     CHARGE
+----------- --------------- ------------ ---------- ----------
+          1             300          290         10          0
+          2             550          400        150       7500
+          3             500          450         50       2500
+          4             900          200        700      60000
+
+SQL> 
