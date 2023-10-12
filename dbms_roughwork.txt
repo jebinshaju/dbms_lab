@@ -806,7 +806,7 @@ shasi                      7000
 ramanan                    9000
 
 
-
+https://silcnitc.github.io/lex.html
 
 create table account50 (accno number,name varchar(20), balance number);
 
@@ -815,6 +815,7 @@ insert into account50 (accno,name,balance) values (02'Judin',21090);
 insert into account50 (accno,name,balance) values (03,'Johan',87790);
 insert into account50 (accno,name,balance) values (04,'Jebin',1070);
 insert into account50 (accno,name,balance) values (05,'kevin',7590);
+
 
 
 
@@ -990,38 +991,40 @@ select past_reading into past from bill50 where consumer_no = customer_number;
 
 unit := present - past;
 
+
 update bill50 set units = unit where consumer_no = customer_number;
 
 if unit < 20 then
 
 	charg := 0;
 	update bill50 set charge = charg where consumer_no = customer_number;
+	
 
 elsif unit >=20 and unit <=100 then
 
 	charg := unit*50;
 	update bill50 set charge = charg where consumer_no = customer_number;
-
+	
 elsif unit >=101 and unit <=300 then
 	
-	unit := unit - 100;
-	charg := unit*50 + 50*100;
+	
+	charg := unit*75;
 	update bill50 set charge = charg where consumer_no = customer_number;
-
+	
 elsif unit >=301 and unit <=500 then
 	
-	unit := unit - 300;
-	charg := unit*50 + 50*100 + 200*75;
+	charg := unit*150;
 	update bill50 set charge = charg where consumer_no = customer_number;
-
+	
 else
 	
-	unit := unit - 500;
-	charg := unit*50 + 50*100 + 200*75 + 200*150;
+	
+	charg := unit*225;
 	update bill50 set charge = charg where consumer_no = customer_number;
-
+	
 end if;
-
+update bill50 set past_reading = present where consumer_no = customer_number;
+update bill50 set present_reading = present+unit where consumer_no = customer_number;
 
 select units into unit from bill50 where consumer_no = customer_number;
 select charge into charg from bill50 where consumer_no = customer_number;
@@ -1032,7 +1035,7 @@ dbms_output.put_line('UNITS TAKEN : ' || unit);
 dbms_output.put_line('CHARGE : ' || charg);
 end;
 
- 58  /
+
 Enter value for customer_number: 1
 old  10: customer_number := &customer_number;
 new  10: customer_number := 1;
@@ -1044,7 +1047,19 @@ CHARGE : 0
 
 PL/SQL procedure successfully completed.
 
- 58  /
+
+Enter value for customer_number: 1
+old  10: customer_number := &customer_number;
+new  10: customer_number := 1;
+CONSUMER NO : 1
+PRESENT READING : 310
+PAST READING : 300
+UNITS TAKEN : 10
+CHARGE : 0
+
+
+
+
 Enter value for customer_number: 2
 old  10: customer_number := &customer_number;
 new  10: customer_number := 2;
@@ -1056,17 +1071,7 @@ CHARGE : 7500
 
 PL/SQL procedure successfully completed.
 
- 58  /
-Enter value for customer_number: 4
-old  10: customer_number := &customer_number;
-new  10: customer_number := 4;
-CONSUMER NO : 4
-PRESENT READING : 900
-PAST READING : 200
-UNITS TAKEN : 700
-CHARGE : 60000
 
-PL/SQL procedure successfully completed.
 
 SQL> select * from bill50;
 
@@ -1077,4 +1082,19 @@ CONSUMER_NO PRESENT_READING PAST_READING      UNITS     CHARGE
           3             500          450         50       2500
           4             900          200        700      60000
 
-SQL> 
+
+
+
+
+
+create table student_marks50 (name varchar(20), roll_no number, mark1 number, mark2 number, mark3 number,total_marks number, grade varchar(20));
+
+insert into student_marks50 (name,roll_no,mark1,mark2,mark3) values ('jerald',34,90,86,95);
+insert into student_marks50 (name,roll_no,mark1,mark2,mark3) values ('judin',35,85,54,34);
+insert into student_marks50 (name,roll_no,mark1,mark2,mark3) values ('kevin',36,78,54,76);
+insert into student_marks50 (name,roll_no,mark1,mark2,mark3) values ('jogan',37,40,68,49);
+
+
+
+
+
