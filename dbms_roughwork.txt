@@ -958,6 +958,7 @@ SQL> select * from account50;
 
 
 
+
 create table bill50 (consumer_no number,present_reading number, past_reading number,units number,charge number);
 insert into bill50 (consumer_no,present_reading,past_reading) values (1,300,290);
 insert into bill50 (consumer_no,present_reading,past_reading) values (2,550,400);
@@ -1096,5 +1097,281 @@ insert into student_marks50 (name,roll_no,mark1,mark2,mark3) values ('jogan',37,
 
 
 
+SQL>  select * from student_marks50;
+
+NAME                    ROLL_NO      MARK1      MARK2      MARK3 TOTAL_MARKS GRADE
+-------------------- ---------- ---------- ---------- ---------- ----------- -------
+jerald                       34         90         86         95
+judin                        35         85         54         34
+kevin                        36         78         54         76
+jogan                        37         40         68         49
 
 
+
+set serveroutput on;
+declare
+tot_marks number;
+grade1 varchar(20);
+student_name varchar(20);
+m1 number;
+m2 number;
+m3 number;
+roll number;
+begin
+
+student_name := '&student_name';
+
+select mark1 into m1 from student_marks50 where name = student_name;
+select mark2 into m2 from student_marks50 where name = student_name;
+select mark3 into m3 from student_marks50 where name = student_name;
+
+
+tot_marks := m1+m2+m3;
+
+
+update student_marks50 set total_marks = tot_marks where name = student_name;
+
+if tot_marks >= 250 then
+
+	grade1 := 'Distinction';
+	
+elsif tot_marks >=180 and tot_marks <250 then
+
+	grade1 := 'First Class';
+	
+elsif tot_marks >=120 and tot_marks <179 then
+
+	grade1 := 'Second Class';
+
+elsif tot_marks >=80 and tot_marks <119 then
+
+	grade1 := 'Third Class';	
+else
+	grade1 := 'Fail';	
+	
+end if;
+
+update student_marks50 set grade = grade1 where name = student_name;
+
+select roll_no into roll from student_marks50 where name = student_name;
+
+dbms_output.put_line('STUDENT NAME : ' || student_name);
+dbms_output.put_line('ROLL NO : ' || roll);
+dbms_output.put_line('TOTAL MARKS : ' || tot_marks);
+dbms_output.put_line('GRADE : ' || grade1);
+
+end;
+
+Enter value for student_name: jogan
+old  11: student_name := '&student_name';
+new  11: student_name := 'jogan';
+STUDENT NAME : jogan
+ROLL NO : 37
+TOTAL MARKS : 157
+GRADE : Second Class
+
+
+SQL> select * from student_marks50;
+
+NAME                    ROLL_NO      MARK1      MARK2      MARK3 TOTAL_MARKS GRADE
+-------------------- ---------- ---------- ---------- ---------- ----------- --------------------
+jerald                       34         90         86         95         271 Distinction
+judin                        35         85         54         34         173 Second Class
+kevin                        36         78         54         76         208 First Class
+jogan                        37         40         68         49         157 Second Class
+
+
+
+
+
+
+
+
+cursor 
+
+create table employee_50 (eno number,ename varchar(20),salary number);
+
+insert into employee_50  (eno,ename,salary) values (1,'Tom',20000);
+insert into employee_50  (eno,ename,salary) values (2,'Somy',30000);
+insert into employee_50  (eno,ename,salary) values (3,'Kurian',40000);
+insert into employee_50  (eno,ename,salary) values (4,'Varkey',10000);
+
+SQL> select * from employee_50;
+
+       ENO ENAME                    SALARY
+---------- -------------------- ----------
+         1 Tom                       20000
+         2 Somy                      30000
+         3 Kurian                    40000
+         4 Varkey                    10000
+
+
+
+set serveroutput on;
+declare
+sum1 number;
+
+begin
+savepoint sp;
+update employee_50 set salary = salary+ salary * 0.2; 
+
+select sum(salary) into sum1 from employee_50;
+
+if sum1 > 100000 then
+	rollback to sp;
+	dbms_output.put_line('Rollback initiated');
+end if;
+commit;
+dbms_output.put_line('Commited');
+end;
+
+Rollback initiated
+Commited
+
+
+SQL> select * from employee_50;
+
+       ENO ENAME                    SALARY
+---------- -------------------- ----------
+         1 Tom                       20000
+         2 Somy                      30000
+         3 Kurian                    40000
+         4 Varkey                    10000
+
+update  employee_50 set salary = 100 where ename = 'Kurian';
+
+SQL> select * from employee_50;
+
+       ENO ENAME                    SALARY
+---------- -------------------- ----------
+         1 Tom                       24000
+         2 Somy                      36000
+         3 Kurian                      120
+         4 Varkey                    12000
+
+
+
+
+
+
+create table student_data50 (roll_no number,name varchar(20), tot_marks number, trade varchar(20), rank number );
+
+
+create sequence seq;
+start with 1;
+increment by 1;
+minvalue 1;
+maxvalue 4;
+
+
+insert into student_data50 (roll_no,name,tot_marks,trade) values (seq.nextval,'tony',90,'rocket_science');
+insert into student_data50 (roll_no,name,tot_marks,trade) values (seq.nextval,'mathew',73,'computer_science');
+insert into student_data50 (roll_no,name,tot_marks,trade) values (seq.nextval,'varkey',59,'material_science');
+insert into student_data50 (roll_no,name,tot_marks,trade) values (seq.nextval,'kurian',86,'polymer_science');
+
+
+
+
+SQL> select roll_no,name,tot_marks,trade from student_data50;
+
+   ROLL_NO NAME                  TOT_MARKS TRADE                      RANK
+---------- -------------------- ---------- -------------------- ----------
+         1 tony                         90 rocket_science
+         2 mathew                       73 computer_science
+         3 varkey                       59 material_science
+         4 kurian                       86 polymer_science
+
+
+set serveroutput on;
+declare
+roll  number;
+nam varchar(20);
+tot number;
+ran number := 1;
+
+cursor c1 is select  roll_no,name,tot_marks from student_data50 order by tot_marks desc;
+
+begin
+
+open c1; 
+loop
+fetch c1 into roll,nam,tot;
+exit when c1%notfound;
+ 	update  student_data50 set rank = ran where roll_no = roll;
+	if ran <= 3 then
+		dbms_output.put_line('Roll_no: ' || roll || ' Name: ' || nam || ' Rank: ' || ran);
+	ran := ran+1;
+	end if;
+end loop;
+
+end;
+
+Roll_no: 1 Name: tony Rank: 1
+Roll_no: 4 Name: kurian Rank: 2
+Roll_no: 2 Name: mathew Rank: 3
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from student_data50;
+
+   ROLL_NO NAME                  TOT_MARKS TRADE                      RANK
+---------- -------------------- ---------- -------------------- ----------
+         1 tony                         90 rocket_science                1
+         2 mathew                       73 computer_science              3
+         3 varkey                       59 material_science              4
+         4 kurian                       86 polymer_science               2
+
+
+
+
+create table product50 (pno number, pname varchar(20), selling_price number, cost_price number);
+
+insert into product50 (pno,pname,selling_price,cost_price) values (1,'toys',300,240);
+insert into product50 (pno,pname,selling_price,cost_price) values (2,'fan',2500,2000);
+insert into product50 (pno,pname,selling_price,cost_price) values (3,'monitors',10000,7000);
+insert into product50 (pno,pname,selling_price,cost_price) values (4,'chair',500,540);
+ 
+
+set serveroutput on;
+declare
+diff number;
+cp number;
+sp number;
+name varchar(20);
+ex exception;
+cursor c1 is select pname,selling_price,cost_price from product50;
+
+begin
+
+open c1;
+loop
+	fetch c1 into name,sp,cp;
+	exit when c1%notfound;
+	if sp<cp then
+		raise ex;
+	end if;
+end loop;
+exception
+when ex then 
+	dbms_output.put_line('Exception raised for ' || name || ' !! selling price: '|| sp ||' is  greater than cost price: ' || cp);
+end;
+
+
+
+Exception raised for chair !! selling price: 500 is  greater than cost price: 540
+
+PL/SQL procedure successfully completed.
+
+
+SQL> select * from product50;
+
+       PNO PNAME                SELLING_PRICE COST_PRICE
+---------- -------------------- ------------- ----------
+         1 toys                           300        240
+         2 fan                           2500       2000
+         3 monitors                     10000       7000
+         4 chair                          500        540
+
+
+
+	
