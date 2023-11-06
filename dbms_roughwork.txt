@@ -1374,4 +1374,154 @@ SQL> select * from product50;
 
 
 
-	
+Create a table T1 having two number fields(a,b). Insert values into T1. If a<b insert those tuples into another table T2 (having same two number fields) and reverse the corresponding tuples in T1.
+
+
+create table t1_50 (a number, b number);
+create table t2_50 (a number, b number);
+
+insert into t1_50 (a,b) values (45,67);
+insert into t1_50 (a,b) values (34,15);
+insert into t1_50 (a,b) values (26,26);
+insert into t1_50 (a,b) values (65,67);
+insert into t1_50 (a,b) values (4,1);
+
+SQL> select * from t1_50;
+
+         A          B
+---------- ----------
+        45         67
+        34         15
+        26         26
+        65         67
+         4          1
+
+set serveroutput on;
+declare
+a1 number;
+b1 number;
+temp number;
+
+cursor c1 is select a,b from t1_50;
+
+begin 
+
+open c1;
+loop
+fetch c1 into a1,b1;
+exit when c1%notfound;
+	if a1<b1 then
+		insert into t2_50 (a,b) values (a1,b1);
+		update t1_50 set a= b1, b= a1 where a= a1;  	
+	end if;
+end loop;
+end;
+
+
+
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from t1_50;
+
+         A          B
+---------- ----------
+        67         45
+        34         15
+        26         26
+        67         65
+         4          1
+
+SQL> select * from t2_50;
+
+         A          B
+---------- ----------
+        45         67
+        65         67
+
+
+
+6)	A bank has an ‘ACCTMASTER’ table where it holds the current status of a client’s bank account. Another table called ‘ACCTTRAN’ holds each transaction as it occurs at bank.(i.e. Deposits/Withdrawals of clients). The ‘ACCTTRAN’ table must hold a flag indicating whether the transaction was credit or debit. Write a PL/SQL program to update the ‘ACCTMASTER’ table and sets the balance depending upon whether the account is debited or credited. The updation should be done only for those records that are not processed.
+
+
+create table acctmaster50 (accno number primary key, name varchar(20), balance number);
+
+create table acctran50 (accno number REFERENCES acctmaster50,transactiondate date,deb_cred varchar(6),amount number,processed varchar(4));
+
+insert into acctmaster50 (accno,name,balance) values (10,'tony',7532);
+insert into acctmaster50 (accno,name,balance) values (11,'kurian',4000);
+insert into acctmaster50 (accno,name,balance) values (12,'mathai',9955);
+insert into acctmaster50 (accno,name,balance) values (13,'varkey',9336);
+
+insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (12,'1-jan-2023','credit',300,'yes');
+insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (10,'4-feb-2023','debit',313,'yes');
+insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (11,'6-jan-2023','credit',600,'no');
+insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (11,'21-mar-2023','credit',700,'yes');
+insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (10,'16-jan-2023','credit',900,'no');
+insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (13,'14-jan-2023','credit',200,'yes');
+
+
+
+
+SQL>  select * from acctmaster50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+        10 tony                       7219
+        11 kurian                     4700
+        12 mathai                    10255
+        13 varkey                     9536
+
+
+
+SQL> select * from acctran50;
+
+     ACCNO TRANSACTI DEB_CR     AMOUNT PROC
+---------- --------- ------ ---------- ----
+        12 01-JAN-23 credit        300 yes
+        10 04-FEB-23 debit         313 yes
+        11 06-JAN-23 credit        600 no
+        11 21-MAR-23 credit        700 yes
+        10 16-JAN-23 credit        900 no
+        13 14-JAN-23 credit        200 yes
+
+6 rows selected.
+
+set serveroutput on;
+declare
+acc number;
+trandate date;
+deb varchar(9);
+amo number;
+pro varchar(9);
+
+cursor c1 is select accno,transactiondate,deb_cred,amount,processed from acctran50;
+
+begin
+
+open c1;
+loop
+	fetch c1 into acc,trandate,deb,amo,pro;
+	exit when c1%notfound;
+	if pro = 'no' then
+		if deb = 'credit' then
+			update acctmaster50 set balance = balance + amo where accno = acc;
+
+		else 
+			update acctmaster50 set balance = balance - amo where accno = acc;
+
+		end if;
+	end if;
+end loop;
+end;
+
+SQL> select * from acctmaster50;
+
+     ACCNO NAME                    BALANCE
+---------- -------------------- ----------
+        10 tony                       8119
+        11 kurian                     5300
+        12 mathai                    10255
+        13 varkey                     9536
+
+
