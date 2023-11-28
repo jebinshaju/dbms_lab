@@ -1,0 +1,43 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>CALCULATE TOTAL COST AND DISCOUNT
+
+
+set serveroutput on;
+
+declare
+totcost number(20);
+discount number(20);
+cost number(20);
+
+begin
+
+cost:=&cost;
+
+if cost >= 5000 then
+ discount:=(20/100)*cost;
+ totcost:=(80/100)*cost;
+ dbms_output.put_line('The Total Discount is '||discount);
+ dbms_output.put_line('The Total Cost is '||totcost);
+else
+ dbms_output.put_line('Not Eligible For Discount!');
+
+end if;
+end;
+
+OUTPUT
+Enter value for cost: 5000
+old   8: cost:=&cost;
+new   8: cost:=5000;
+The Total Discount is 1000
+The Total Cost is 4000
+
+PL/SQL procedure successfully completed.
+
+ 
+ 
+
+|

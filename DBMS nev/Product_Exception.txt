@@ -1,0 +1,80 @@
+
+CREATE TABLE PRODUCT45(PNO NUMBER(10),PNAME VARCHAR(20),SELLING_PRICE VARCHAR(20),COST_PRICE NUMBER(20));
+Table created.
+
+INSERT INTO PRODUCT45(PNO,PNAME,SELLING_PRICE,COST_PRICE) VALUES(1,'Jumbo Chips',2000,2100);
+1 row created.
+
+INSERT INTO PRODUCT45(PNO,PNAME,SELLING_PRICE,COST_PRICE) VALUES(2,'Glass',2300,2100);
+1 row created.
+
+INSERT INTO PRODUCT45(PNO,PNAME,SELLING_PRICE,COST_PRICE) VALUES(3,'Glassow',2500,2100);
+1 row created.
+
+SELECT * FROM PRODUCT45;
+SELECT * FROM PRODUCT45;
+
+  PNO PNAME                SELLING_PRICE        COST_PRICE
+----- -------------------- -------------------- ----------
+    3 Glassow              2500                       2100
+    1 Jumbo Chips          2000                       2100
+    2 Glass                2300                       2100
+
+
+
+
+set serveroutput on;
+declare
+cursor c1 is select PNO,SELLING_PRICE,COST_PRICE FROM PRODUCT45;
+n1 NUMBER(20);
+n2 NUMBER(20);
+count1 NUMBER(20);
+n3 NUMBER(20);
+No NUMBER(20);
+ex exception;
+
+begin
+count1:=0;
+
+
+open c1;
+
+loop
+
+fetch c1 into n1,n2,n3;
+
+exit when c1%notfound;
+
+if n2>n3 then
+ count1:=count1+1;
+ No:=n1;
+ raise ex;
+ 
+end if;
+
+end loop;
+
+close c1;
+
+
+exception
+when ex then
+
+dbms_output.put_line('The Exception has been raised '||count1||' times'||' by product ID '||No);
+
+
+end;
+
+OUTPUT
+
+The Exception has been raised 1 times by product ID 3
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>UPDATE THE SALARY OF EMPLOYEE
+
+
+CREATE TABLE INCOME45(NAME varchar(20),SALARY number(20));
+Table created.
+INSERT INTO INCOME45(NAME,SALARY) VALUES('Ramesh',13000);
+1 row created.
+
+
+set serveroutput on;
+
+declare
+
+SALARY1 number(20);
+totsalary number(20);
+
+begin
+
+SELECT SALARY INTO SALARY1 FROM INCOME45 WHERE NAME='Ramesh';
+
+if SALARY1 > 8000 then
+totsalary:=SALARY1+(SALARY1*.2);
+
+elsif SALARY1>=5000 then
+totsalary:=SALARY1+(SALARY1*0.1);
+else
+totsalary:=SALARY1+(SALARY1*0.05);
+
+end if;
+
+UPDATE INCOME45 SET
+SALARY=totsalary
+WHERE NAME='Ramesh';
+
+
+
+
+end;
+
+OUTPUT
+
+//BEFORE
+
+SELECT * FROM INCOME45;
+
+NAME                     SALARY
+-------------------- ----------
+Ramesh                    13000
+
+//AFTER
+
+SELECT * FROM INCOME45;
+
+NAME                     SALARY
+-------------------- ----------
+Ramesh                    15600
+

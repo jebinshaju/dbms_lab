@@ -1,0 +1,44 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>SUM OF FIRST N ODD NUMBERS
+
+set serveroutput on;
+
+declare
+n number(20);
+s number(20):=0;
+counter number(20):=0;
+i number(20):=0;
+
+
+begin
+n:=&n;
+
+
+
+while counter != n loop
+
+if i mod 2 !=0 then
+s:=s+i;
+counter:=counter+1;
+end if;
+
+i:=i+1;
+
+
+end loop;
+
+dbms_output.put_line('The sum is '||s);
+
+end;
+
+OUTPUT
+Enter value for n: 4
+old   9: n:=&n;
+new   9: n:=4;
+The sum is 16
+
+PL/SQL procedure successfully completed.

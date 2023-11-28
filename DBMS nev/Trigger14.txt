@@ -1,0 +1,76 @@
+
+
+CREATE TABLE TUP45(a NUMBER(10),b NUMBER(10));
+Table created.
+
+CREATE OR REPLACE TRIGGER T145 BEFORE INSERT OR UPDATE ON TUP45 FOR EACH ROW
+declare
+
+a1 NUMBER(10);
+b1 NUMBER(10);
+t NUMBER(10);
+
+begin
+t:=:new.a+:new.b;
+
+if inserting then
+if t<=75 then
+	raise_application_error(-20001,'a+b<=75');
+ 
+ end if;
+
+
+end if;
+
+if updating then
+ if :new.b<:old.b then
+	raise_application_error(-20001,':new.b<:old.b');
+
+
+ end if;
+
+
+end if;
+
+end;
+
+
+OUTPUT
+
+SQL> INSERT INTO TUP45(a,b) VALUES(30,46);
+
+1 row created.
+
+SQL> INSERT INTO TUP45(a,b) VALUES(100,100);
+
+1 row created.
+
+SQL> select * from TUP45;
+
+         A          B
+---------- ----------
+       100        100
+        30         46
+
+SQL> UPDATE TUP45 SET b=40 WHERE a=30;
+UPDATE TUP45 SET b=40 WHERE a=30
+       *
+ERROR at line 1:
+ORA-20001: :new.b<:old.b
+ORA-06512: at "STUDENT.T145", line 21
+ORA-04088: error during execution of trigger 'STUDENT.T145'
+
+SQL> UPDATE TUP45 SET b=48 WHERE a=30;
+
+1 row updated.
+
+SQL> select * from TUP45;
+
+         A          B
+---------- ----------
+       100        100
+        30         48
+
+
+
+

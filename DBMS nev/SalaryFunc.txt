@@ -1,0 +1,62 @@
+CREATE TABLE EMPLOYEE45R(EMPLOYEEID NUMBER(20),ENAME VARCHAR(20),SALARY NUMBER(20),JOB VARCHAR(20));
+Table created.
+
+INSERT INTO EMPLOYEE45R(EMPLOYEEID,ENAME,SALARY,JOB) VALUES(1,'Rahul',25000,'Mechanic');
+1 row created.
+INSERT INTO EMPLOYEE45R(EMPLOYEEID,ENAME,SALARY,JOB) VALUES(2,'Jase',20000,'Plumber');
+1 row created.
+INSERT INTO EMPLOYEE45R(EMPLOYEEID,ENAME,SALARY,JOB) VALUES(3,'Jathin Ramdas',200000,'Pilot');
+1 row created.
+
+
+CREATE OR REPLACE FUNCTION SALARY(n in NUMBER)
+
+return NUMBER as
+
+SAL NUMBER(20);
+
+begin
+
+SELECT SALARY INTO SAL FROM EMPLOYEE45R WHERE EMPLOYEEID=n;
+
+return SAL;
+
+end;
+
+set serveroutput on;
+declare
+ID NUMBER(20);
+SAL1 NUMBER(20);
+begin
+ID:=&ID;
+SAL1:=SALARY(ID);
+dbms_output.put_line('The salary of the corresponding employee '||ID||' is '||SAL1);
+end;
+
+
+OUTPUT
+
+SELECT * FROM EMPLOYEE45R
+
+EMPLOYEEID ENAME                    SALARY JOB
+---------- -------------------- ---------- --------------------
+         1 Rahul                     25000 Mechanic
+         2 Jase                      20000 Plumber
+         3 Jathin Ramdas            200000 Pilot
+
+
+
+
+Function created.
+
+Enter value for id: 2
+old   5: ID:=&ID;
+new   5: ID:=2;
+The salary of the corresponding employee 2 is 20000
+
+PL/SQL procedure successfully completed.
+
+
+
+
+

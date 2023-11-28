@@ -1,0 +1,44 @@
+
+CREATE OR REPLACE FUNCTION FACTORIAL45(n in NUMBER)
+
+return NUMBER as
+
+FACT NUMBER(20):=1;
+begin
+
+for i in 1..n loop
+FACT:=FACT*i;
+end loop;
+
+return FACT;
+
+end;
+
+
+set serveroutput on;
+
+declare
+N NUMBER(20);
+FACTS NUMBER(20); 
+
+begin
+N:=&N;
+
+FACTS:=FACTORIAL45(N);
+
+dbms_output.put_line('The factorial of the number is '||FACTS);
+
+
+end;
+
+
+Function created.
+
+OUTPUT
+
+Enter value for n: 6
+old   6: N:=&N;
+new   6: N:=6;
+The factorial of the number is 720
+
+PL/SQL procedure successfully completed.

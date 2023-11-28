@@ -1,0 +1,95 @@
+*************************************************
+NAME  :PRITHVIRAJ V NAIR
+ROLL  :47
+CLASS :S5 CSE-B
+**************************************************
+		ROLLBACK AND SAVEPOINT
+
+
+
+
+
+CREATE TABLE EMPLOYEE47(ENO NUMBER(05),ENAME VARCHAR(20),SALARY NUMBER(30));
+Table created.
+INSERT INTO EMPLOYEE47(ENO,ENAME,SALARY) VALUES(1,'A',20000);
+INSERT INTO EMPLOYEE47(ENO,ENAME,SALARY) VALUES(2,'B',40000);
+INSERT INTO EMPLOYEE47(ENO,ENAME,SALARY) VALUES(3,'C',50000);
+
+
+
+set serveroutput on;
+
+
+declare
+
+
+eno NUMBER(20);
+salarytot NUMBER(20);
+
+begin
+
+
+savepoint sp;
+
+UPDATE EMPLOYEE47 SET SALARY=SALARY+SALARY*.20 WHERE ENO=1;
+
+
+UPDATE EMPLOYEE47 SET SALARY=SALARY+SALARY*.20 WHERE ENO=2;
+
+UPDATE EMPLOYEE47 SET SALARY=SALARY+SALARY*.20 WHERE ENO=3;
+
+SELECT SUM(SALARY) INTO salarytot FROM EMPLOYEE47;
+
+if salarytot > 100000 then
+ 	dbms_output.put_line('Roll back success!!!');
+	rollback to sp;
+
+else
+  dbms_output.put_line('The Program has been successfully updated!!!');
+  commit;
+
+end if;
+
+end;
+
+
+**************************************************
+OUTPUT
+
+1)
+SELECT * from EMPLOYEE47;
+
+  ENO ENAME                    SALARY
+----- -------------------- ----------
+    1 R                         30000
+    2 A                         80000
+    3 D                         50000
+
+
+
+
+1)
+Roll back success!!!
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from EMPLOYEE47;
+
+       ENO ENAME                    SALARY
+---------- -------------------- ----------
+         1 A                         30000
+         2 B                         80000
+         3 C                         50000
+
+
+
+	
+
+
+
+
+
+
+
+
+

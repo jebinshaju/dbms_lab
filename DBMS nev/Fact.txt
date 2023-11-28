@@ -1,0 +1,32 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>FACTORIAL OF A NUMBER
+
+
+declare
+
+n number(20);
+fact number(20):=1;
+
+begin
+n:=&n;
+
+for i in 1..n loop
+
+fact:=fact*i;
+
+end loop;
+dbms_output.put_line('Factorial: '||fact);
+
+end;
+
+OUTPUT
+Enter value for n: 5
+old   7: n:=&n;
+new   7: n:=5;
+Factorial: 120
+
+PL/SQL procedure successfully completed.

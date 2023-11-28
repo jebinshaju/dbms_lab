@@ -1,0 +1,46 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>FIBONACCI SERIES
+
+set serveroutput on;
+
+declare
+
+a number(10):=0;
+b number(10):=1;
+c number(20);
+n number(20);
+begin
+
+n:=&n;
+
+dbms_output.put_line(a);
+dbms_output.put_line(b);
+
+for i in 1..n-1 loop
+if i>1 then
+ c:=a+b;
+ a:=b;
+ b:=c;
+ dbms_output.put_line(c);
+end if;
+end loop;
+
+end;
+
+OUTPUT
+
+Enter value for n: 5
+old   9: n:=&n;
+new   9: n:=5;
+0
+1
+1
+2
+3
+
+PL/SQL procedure successfully completed.
+

@@ -1,0 +1,157 @@
+
+1)
+CREATE TABLE ST2K(Name varchar(20),Roll_No varchar(20),Age varchar(20),Branch varchar(20));
+INSERT INTO ST2K VALUES('&Name',&Roll_No,&Age,'&Branch');
+SELECT * FROM ST2K;
+
+NAME                 ROLL_NO              AGE                  BRANCH               
+-------------------- -------------------- -------------------- -------------------- 
+Anil Kumar           201                  18                   CS                   
+Ramesh V             202                  19                   ME                  
+John Paul            103                  17                   EC                   
+Reema Dev            111                  16                   CS                  
+Sachin Gaur          301                  18                   ME                  
+
+2)
+CREATE TABLE DISTRIBUTERK9(Dcode varchar(20),Codename varchar(20),Amount varchar(20),Limit varchar(20));
+INSERT INTO DISTRIBUTERK9 VALUES(&Dcode,'&Codename',&Amount,&Limit);
+SELECT * FROM DISTRIBUTERK9;
+
+
+DCODE                CODENAME             AMOUNT               LIMIT
+-------------------- -------------------- -------------------- --------------------
+207                  BlueStar LTD         78000                100000
+202                  HCL LTD              80000                100000
+203                  Soft Agency          80000                90000
+150                  MicroSystems         60000                80000
+160                  PHI Systems          0                    90000
+
+3)
+CREATE TABLE AGENCIESX(Agcode varchar(20),Agname varchar(20),Amount varchar(20),Aglimit varchar(20));
+INSERT INTO AGENCIESX VALUES(&Agcode,'&Agname',&Amount,&Aglimit);
+SELECT * FROM AGENCIESX;
+
+AGCODE               AGNAME               AMOUNT               AGLIMIT
+-------------------- -------------------- -------------------- --------------------
+401                  Nath&Co              2500                 10000
+402                  Ram Son              3600                 10000
+403                  Krishna Stores       4000                 15000
+409                  Kantt Mart           3279                 10000
+407                  Papco                0                    10000
+
+4)
+ALTER TABLE ST2K ADD(totmarks varchar(20));
+UPDATE ST2K SET totmarks=96 WHERE Roll_No=301;
+UPDATE ST2K SET totmarks=100 WHERE Roll_No=201;
+UPDATE ST2K SET totmarks=100 WHERE Roll_No=202;
+UPDATE ST2K SET totmarks=100 WHERE Roll_No=103;
+UPDATE ST2K SET totmarks=98 WHERE Roll_No=111;
+SELECT * FROM ST2K;
+
+
+NAME                 ROLL_NO              AGE                  BRANCH               TOTMARKS
+-------------------- -------------------- -------------------- -------------------- --------------------
+Anil Kumar           201                  18                   CS                   100
+Ramesh V             202                  19                   ME                   100
+John Paul            103                  17                   EC                   100
+Reema Dev            111                  16                   CS                   98
+Sachin Gaur          301                  18                   ME                   96
+
+5)
+UPDATE AGENCIESX SET Amount=5000 WHERE Agcode=403;
+SELECT * FROM AGENCIESX;
+
+AGCODE               AGNAME               AMOUNT               AGLIMIT
+-------------------- -------------------- -------------------- --------------------
+401                  Nath&Co              2500                 10000
+402                  Ram Son              3600                 10000
+403                  Krishna Stores       5000                 15000
+409                  Kantt Mart           3279                 10000
+407                  Papco                0                    10000
+
+6)
+DELETE FROM DISTRIBUTERK9 WHERE Amount<70000;
+SELECT * FROM DISTRIBUTERK9;
+
+2 rows deleted.
+
+SQL> SELECT * FROM DISTRIBUTERK9;
+
+DCODE                CODENAME             AMOUNT               LIMIT
+-------------------- -------------------- -------------------- --------------------
+207                  BlueStar LTD         78000                100000
+202                  HCL LTD              80000                100000
+203                  Soft Agency          80000                90000
+
+7)
+SELECT Agcode,Agname FROM AGENCIESX ORDER BY Amount DESC;
+AGCODE               AGNAME
+-------------------- --------------------
+403                  Krishna Stores
+402                  Ram Son
+409                  Kantt Mart
+401                  Nath&Co
+407                  Papco
+
+8)
+SELECT Agname FROM AGENCIESX WHERE Amount<40000;
+
+AGNAME
+--------------------
+Nath&Co
+Ram Son
+Krishna Stores
+Kantt Mart
+Papco
+
+9)
+SELECT Name AS Student_Name,Roll_No AS Student_RollNo FROM ST2K;
+
+STUDENT_NAME         STUDENT_ROLLNO
+-------------------- --------------------
+Anil Kumar           201
+Ramesh V             202
+John Paul            103
+Reema Dev            111
+Sachin Gaur          301
+
+10)
+SELECT * FROM ST2K WHERE Branch='CS';
+
+
+NAME                 ROLL_NO              AGE                  BRANCH               TOTMARKS
+-------------------- -------------------- -------------------- -------------------- --------------------
+Anil Kumar           201                  18                   CS                   100
+Reema Dev            111                  16                   CS                   98
+
+11)
+UPDATE DISTRIBUTERK9 SET Limit=1500000,Amount=10000 WHERE Limit=100000;
+
+2 rows updated.
+
+SQL> SELECT * FROM ST2K;
+
+NAME                 ROLL_NO              AGE                  BRANCH               TOTMARKS
+-------------------- -------------------- -------------------- -------------------- --------------------
+Anil Kumar           201                  18                   CS                   100
+Ramesh V             202                  19                   ME                   100
+John Paul            103                  17                   EC                   100
+Reema Dev            111                  16                   CS                   98
+Sachin Gaur          301                  18                   ME                   96
+
+12)
+SELECT AVG(totmarks) FROM ST2K;
+AVG(TOTMARKS)
+-------------
+         98.8
+
+
+
+
+
+
+
+
+
+
+

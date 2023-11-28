@@ -1,0 +1,35 @@
+if a>b then
+ 	if a>c then
+	  dbms_output.put_line('The Largest is:'||a);
+	  if b>c then
+		dbms_output.put_line('The Smallest is:'||c);
+	  else
+		dbms_output.put_line('The Smallest is:'||b);
+	  end if;
+	else
+	  dbms_output.put_line('The Largest is:'||c);
+	  if b<a then
+		dbms_output.put_line('The Smallest is:'||b);
+	  else
+		dbms_output.put_line('The Smallest is:'||a);
+	  end if;
+	end if;
+
+
+elsif b > c then
+	  dbms_output.put_line('The Largest is:'||b);
+	  if a>c then
+		dbms_output.put_line('The Smallest is:'||c);
+	  else
+		dbms_output.put_line('The Smallest is:'||a);
+	  end if;
+	else
+	  dbms_output.put_line('The Largest is:'||c);
+	  if b<a then
+		dbms_output.put_line('The Smallest is:'||b);
+	  else
+		dbms_output.put_line('The Smallest is:'||a);
+	  end if;
+
+	
+end if;

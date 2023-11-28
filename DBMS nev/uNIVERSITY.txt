@@ -1,0 +1,80 @@
+CREATE TABLE T145(ROLL_NO NUMBER(10),UNIVERSITY_MARKS NUMBER(20),SESSIONALS NUMBER(20));
+Table created
+INSERT INTO T145(ROLL_NO,UNIVERSITY_MARKS,SESSIONALS) VALUES (1,35,31);
+1 row created.
+INSERT INTO T145(ROLL_NO,UNIVERSITY_MARKS,SESSIONALS) VALUES (2,35,33);
+1 row created.
+INSERT INTO T145(ROLL_NO,UNIVERSITY_MARKS,SESSIONALS) VALUES (3,40,40);
+1 row created.
+CREATE TABLE T245(ROLL_NO1 NUMBER(10),UNIVERSITY_MARKS1 NUMBER(20),SESSIONALS1 NUMBER(20));
+Table created.
+
+
+
+
+set serveroutput on;
+declare 
+cursor c1 is select ROLL_NO,UNIVERSITY_MARKS,SESSIONALS FROM T145;
+n1 NUMBER(20);
+n2 NUMBER(20);
+n3 NUMBER(20);
+
+begin
+open c1;
+
+loop
+
+fetch c1 into n1,n2,n3;
+
+exit when c1%notfound;
+
+if n3>=30 and n3<35 then
+	UPDATE T145 SET SESSIONALS=35 WHERE ROLL_NO=n1;
+	dbms_output.put_line('Sessionals updated successfully for Roll No '||n1);
+elsif n2+n3>75 then
+	INSERT INTO T245(ROLL_NO1,UNIVERSITY_MARKS1,SESSIONALS1) VALUES(n1,n2,n3);
+	dbms_output.put_line('Values where Inserted to a new table!!');
+end if;
+
+end loop;
+close c1;
+
+end;
+
+
+OUTPUT
+
+//BEFORE
+
+T145
+SELECT * FROM T145;
+
+ ROLL_NO UNIVERSITY_MARKS SESSIONALS
+-------- ---------------- ----------
+       1               35         31
+       2               35         33
+       3               40         40
+
+//AFTER
+Values where Inserted to a new table!!
+PL/SQL procedure successfully completed.
+
+T145
+
+   ROLL_NO UNIVERSITY_MARKS SESSIONALS
+---------- ---------------- ----------
+         1               35         35
+         2               35         35
+         3               40         40
+
+T245
+SELECT * FROM T245;
+
+  ROLL_NO1 UNIVERSITY_MARKS1 SESSIONALS1
+---------- ----------------- -----------
+         3                40          40
+
+
+
+
+

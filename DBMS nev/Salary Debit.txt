@@ -1,0 +1,125 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>ACCOUNT DEBIT AND BALANCE UPDATION
+
+CREATE TABLE ACCOUNT45KA(C_NAME VARCHAR(20),ACC_NO NUMBER(20),BALANCE NUMBER(20));
+Table created.
+
+INSERT INTO ACCOUNT45KA(C_NAME,ACC_NO,BALANCE) VALUES('Rahul',123,1000);
+1 row created.
+INSERT INTO ACCOUNT45KA(C_NAME,ACC_NO,BALANCE) VALUES('Ravi',124,900);
+1 row created.
+INSERT INTO ACCOUNT45KA(C_NAME,ACC_NO,BALANCE) VALUES('Raghav',124,10000);
+1 row created.
+
+set serveroutput on;
+
+declare
+
+minbalance number(20):=1000;
+BAL number(20);
+ac_no number(20);
+amount number(20);
+rem number(20);
+
+
+
+
+begin
+ac_no:=&ac_no;
+amount:=&amount;
+
+SELECT BALANCE INTO BAL FROM ACCOUNT45KA WHERE ACC_NO=ac_no;
+
+
+
+rem:=BAL-amount;
+
+if rem > minbalance then
+UPDATE ACCOUNT45KA SET
+BALANCE=rem
+WHERE ACC_NO=ac_no;
+
+
+dbms_output.put_line('The Table has been successfully updated!');
+
+
+
+
+else
+rem:=BAL-minbalance;
+
+if rem>0 then
+dbms_output.put_line('The amount given is '||rem);
+
+UPDATE ACCOUNT45KA SET
+BALANCE=1000
+WHERE ACC_NO=ac_no;
+
+
+dbms_output.put_line('The Table has been successfully updated,but with upto remaining balance!');
+
+else
+dbms_output.put_line('Insufficient Balance!');
+end if;
+
+end if;
+
+end;
+
+OUTPUT
+
+//BEFORE UPDATION
+
+SELECT * FROM ACCOUNT45KA;
+C_NAME                   ACC_NO    BALANCE
+-------------------- ---------- ----------
+Rahul                       123       1000
+Raghav                      125      10000
+Ravi                        124        900
+
+//AFTER
+
+1)
+Enter value for ac_no: 123
+old  13: ac_no:=&ac_no;
+new  13: ac_no:=123;
+Enter value for amount: 2000
+old  14: amount:=&amount;
+new  14: amount:=2000;
+Insufficient Balance!
+
+PL/SQL procedure successfully completed.
+SELECT * FROM ACCOUNT45KA;
+C_NAME                   ACC_NO    BALANCE
+-------------------- ---------- ----------
+Rahul                       123       1000
+Raghav                      125      10000
+Ravi                        124        900
+
+2)
+
+Enter value for ac_no: 125
+old  13: ac_no:=&ac_no;
+new  13: ac_no:=125;
+Enter value for amount: 12000
+old  14: amount:=&amount;
+new  14: amount:=12000;
+The amount given is 9000
+The Table has been successfully updated,but with upto remaining balance!
+
+PL/SQL procedure successfully completed.
+C_NAME                   ACC_NO    BALANCE
+-------------------- ---------- ----------
+Rahul                       123       1000
+Raghav                      125       1000
+Ravi                        124        900
+
+
+
+
+
+

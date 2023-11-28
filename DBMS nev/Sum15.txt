@@ -1,0 +1,56 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>INSERT NUMBERS FROM 1 TO 15 INTO A TABLE
+
+CREATE TABLE TEMP45K(NO NUMBER(10));
+
+set serveroutput on;
+
+declare
+
+i number(20):=1;
+
+
+begin
+
+while i<=15 loop
+ INSERT INTO TEMP45K(NO)
+ VALUES(i);
+ i:=i+1;
+
+end loop;
+
+
+
+end;
+
+ SELECT * FROM TEMP45K;
+
+
+OUTPUT
+        NO
+----------
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+        10
+        11
+        12
+        13
+        14
+        15
+
+15 rows selected
+
+
+
+ 

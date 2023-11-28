@@ -1,0 +1,37 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>SUM OF TWO NUMBERS
+
+set serveroutput on;
+
+declare
+num1 number(20):=20;
+num2 number(20):=10;
+s number(20);
+
+begin
+
+s:=num1+num2;
+dbms_output.put_line('The sum is '||s);
+
+end;
+
+OUTPUT
+SQL> declare
+  2  num1 number(20):=20;
+  3  num2 number(20):=10;
+  4  s number(20);
+  5  
+  6  begin
+  7  
+  8  s:=num1+num2;
+  9  dbms_output.put_line('The sum is '||s);
+ 10  
+ 11  end;
+ 12  /
+The sum is 30
+
+PL/SQL procedure successfully completed.

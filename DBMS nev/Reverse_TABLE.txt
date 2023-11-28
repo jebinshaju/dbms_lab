@@ -1,0 +1,71 @@
+CREATE TABLE T145K(a NUMBER(10),b NUMBER(20));
+Table created.
+INSERT INTO T145K(a,b) VALUES(2,5);
+1 row created.
+INSERT INTO T145K(a,b) VALUES(3,6);
+1 row created.
+INSERT INTO T145K(a,b) VALUES(6,3);
+1 row created.
+CREATE TABLE T245K(a1 NUMBER(10),b1 NUMBER(20));
+
+declare 
+cursor c1 is select a,b FROM T145K;
+n1 NUMBER(20);
+n2 NUMBER(20);
+
+begin
+open c1;
+
+loop
+
+fetch c1 into n1,n2;
+
+exit when c1%notfound;
+
+if n1<n2 then
+	INSERT INTO T245K(a1,b1) VALUES(n1,n2);
+	dbms_output.put_line('Values Inserted into new Table');
+	
+	UPDATE T145K SET a=n2,b=n1 WHERE a=n1 AND b=n2;
+end if;
+
+end loop;
+close c1;
+end;
+
+OUTPUT
+
+//BEFORE
+
+SELECT * FROM T145K;
+
+        A          B
+--------- ----------
+        2          5
+        3          6
+        6          3
+//AFTER
+Values Inserted into new Table
+Values Inserted into new Table
+
+PL/SQL procedure successfully completed.
+
+SELECT * FROM T145K;
+SQL> SELECT * FROM T145K;
+
+    A          B
+----- ----------
+    5          2
+    6          3
+    6          3
+
+
+SELECT * FROM T245K;
+SQL> SELECT * FROM T245K;
+
+        A1         B1
+---------- ----------
+         2          5
+         3          6
+
+

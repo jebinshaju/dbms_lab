@@ -1,0 +1,17 @@
+set serveroutput on;
+
+declare
+m number(20):=20;
+
+begin
+
+dbms_output.put_line('The output is '||m);
+
+
+end;
+
+
+OUTPUT
+The output is 20
+
+PL/SQL procedure successfully completed.

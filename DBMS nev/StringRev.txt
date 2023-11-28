@@ -1,0 +1,41 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>REVERSE A STRING
+
+set serveroutput on;
+
+declare 
+string varchar(20);
+len number(10);
+rev varchar(20);
+
+begin
+
+string:='&string';
+len:=Length(string);
+
+for i in 1..len loop
+
+rev:=substr(string,i,1)||rev;
+
+end loop;
+
+dbms_output.put_line(rev);
+
+end;
+
+OUTPUT
+Enter value for string: Hello
+old   8: string:='&string';
+new   8: string:='Hello';
+olleH
+
+PL/SQL procedure successfully completed.
+
+
+
+
+

@@ -1,0 +1,109 @@
+CREATE TABLE STUDENT45RC(ROLL_NO NUMBER(3),NAME VARCHAR(20),TOT_MARKS NUMBER(10),TRADE VARCHAR(15),RANK NUMBER(3));
+
+SELECT * FROM STUDENT45RC;
+
+
+
+
+
+CREATE SEQUENCE SEQ45RC
+start with 1
+increment by 1
+minvalue 1
+maxvalue 10
+
+cycle;
+
+INSERT INTO STUDENT45RC(ROLL_NO,NAME,TOT_MARKS,TRADE) VALUES(SEQ45RC.nextval,'&NAME',&TOT_MARKS,'&TRADE');
+
+
+set serveroutput on;
+declare
+
+n1 NUMBER(20);
+n2 NUMBER(20);
+n3 NUMBER(20);
+largest NUMBER(20):=0;
+seclargest NUMBER(20):=0;
+thirdlargest NUMBER(20):=0;
+NAME1 VARCHAR(20);
+NAME2 VARCHAR(20);
+NAME3 VARCHAR(20);
+
+cursor c1 is select TOT_MARKS FROM STUDENT45RC;
+
+begin
+
+
+
+open c1;
+
+loop
+
+fetch c1 into n1;
+
+exit when c1%notfound;
+
+if n1>largest then
+ largest:=n1;
+
+else
+ if n1>seclargest then
+	thirdlargest:=seclargest;
+ 	seclargest:=n1;
+ else	
+	seclargest:=thirdlargest;
+	thirdlargest:=n1;
+ end if;
+end if;
+
+ 
+
+end loop;
+
+close c1;
+
+UPDATE STUDENT45RC SET RANK=1 WHERE TOT_MARKS=largest;
+UPDATE STUDENT45RC SET RANK=2 WHERE TOT_MARKS=seclargest;
+UPDATE STUDENT45RC SET RANK=3 WHERE TOT_MARKS=thirdlargest;
+
+SELECT NAME INTO NAME1 FROM STUDENT45RC WHERE TOT_MARKS=largest;
+
+SELECT NAME INTO NAME2 FROM STUDENT45RC WHERE TOT_MARKS=seclargest;
+
+SELECT NAME INTO NAME3 FROM STUDENT45RC WHERE TOT_MARKS=thirdlargest;
+
+dbms_output.put_line('The Top 3 Rankers in Order are');
+
+dbms_output.put_line(NAME1);
+dbms_output.put_line(NAME2);
+dbms_output.put_line(NAME3);
+
+
+
+end;
+
+
+OUTPUT
+SQL> SELECT * FROM STUDENT45RC;
+
+   ROLL_NO NAME                  TOT_MARKS TRADE                 RANK
+---------- -------------------- ---------- --------------- ----------
+         1 Alisson                      99 cse                      1
+         2 Blast Mohan                  88 ECE                      3
+         3 Garuda                       95 MECH                     2
+
+The Top 3 Rankers in Order are
+Alisson
+Garuda
+Blast Mohan
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+

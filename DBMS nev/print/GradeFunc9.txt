@@ -1,0 +1,92 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>FIND GRADE USING PROCEDURE
+
+
+
+
+
+
+CREATE TABLE GRADE45(SID NUMBER(20),NAME VARCHAR(20),MARK1 NUMBER(20),MARK2 NUMBER(20),MARK3 NUMBER(20));
+
+INSERT INTO GRADE45(SID,NAME,MARK1,MARK2,MARK3) VALUES(1,'Raghu',33,33,33);
+1 row created.
+INSERT INTO GRADE45(SID,NAME,MARK1,MARK2,MARK3) VALUES(2,'Bison',20,20,20);
+1 row created.
+INSERT INTO GRADE45(SID,NAME,MARK1,MARK2,MARK3) VALUES(3,'Pam',10,10,10);
+1 row created.
+
+CREATE OR REPLACE PROCEDURE GRADEC45(n in NUMBER,grade out CHAR)
+AS
+
+T_MARKS NUMBER(20);
+
+M1 NUMBER(20);
+M2 NUMBER(20);
+M3 NUMBER(20);
+begin
+
+SELECT MARK1,MARK2,MARK3 INTO M1,M2,M3 FROM GRADE45 WHERE SID=n;
+
+T_MARKS:=M1+M2+M3;
+
+
+if T_MARKS>100 then
+
+grade:='A';
+
+elsif T_MARKS>=70 AND T_MARKS<100 then
+
+grade:='B';
+
+
+elsif T_MARKS>=50 AND T_MARKS<70 then
+
+grade:='C';
+
+elsif T_MARKS<50 then
+
+grade:='FAIL';
+
+end if;
+
+end;
+
+set serveroutput on;
+
+declare
+grade CHAR(20);
+
+ROLL_NO NUMBER(20);
+
+begin
+
+ROLL_NO:=&ROLL_NO;
+
+GRADEC45(ROLL_NO,grade);
+
+dbms_output.put_line('The Grade of the corresponding student is '||grade);
+
+end;
+
+
+OUTPUT
+SELECT * FROM GRADE45;
+SQL> SELECT * FROM GRADE45;
+
+       SID NAME                      MARK1      MARK2      MARK3
+---------- -------------------- ---------- ---------- ----------
+         1 Raghu                        33         33         33
+         2 Bison                        20         20         20
+         3 Pam                          10         10         10
+
+
+Enter value for roll_no: 2
+old   8: ROLL_NO:=&ROLL_NO;
+new   8: ROLL_NO:=2;
+The Grade of the corresponding student is C
+
+PL/SQL procedure successfully completed.

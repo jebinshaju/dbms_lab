@@ -1,0 +1,75 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>INSERT ODD AND EVEN NUMBERS FROM 1 TO 25 INTO TWO TABLES
+
+CREATE TABLE EVEN45K(NO NUMBER(20));
+Table created.
+CREATE TABLE ODD45K(NUM NUMBER(20));
+Table created.
+
+set serveroutput on;
+
+declare 
+
+i number(20);
+
+begin
+i:=1;
+while i<=25 loop
+
+if mod(i,2)= 0 then
+INSERT INTO EVEN45K(NO) VALUES(i);
+
+
+
+else
+INSERT INTO ODD45K(NUM) VALUES(i);
+
+
+end if;
+
+i:=i+1;
+end loop;
+
+end;
+
+OUTPUT
+
+SELECT * FROM EVEN45K;
+
+        NO
+----------
+         2
+         4
+         6
+         8
+        10
+        12
+        14
+        16
+        18
+        20
+        22
+        24
+SELECT * FROM ODD45K;
+       NUM
+----------
+         1
+         3
+         5
+         7
+         9
+        11
+        13
+        15
+        17
+        19
+        21
+        23
+        25
+
+13 rows selected.
+

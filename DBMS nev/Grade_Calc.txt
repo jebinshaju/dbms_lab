@@ -1,0 +1,69 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>CALCULATE GRADE OF STUDENT
+
+CREATE TABLE STUDENT45KA(NAME VARCHAR(20),ROLL_NO NUMBER(20),MARK1 NUMBER(20),MARK2 NUMBER(20),MARK3 NUMBER(20));
+Table created.
+INSERT INTO STUDENT45KA(NAME,ROLL_NO,MARK1,MARK2,MARK3) VALUES ('Rana',18,29,42,49);
+1 row created.
+
+
+set serveroutput on;
+
+declare
+ROLL NUMBER(20);
+GRADE VARCHAR(20);
+mark1 NUMBER(20);
+mark2 NUMBER(20);
+mark3 NUMBER(20);
+Name varchar(20);
+TOT_MARKS NUMBER(20);
+begin
+ROLL:=&ROLL;
+SELECT NAME INTO Name FROM STUDENT45KA WHERE ROLL_NO=ROLL;
+SELECT MARK1 INTO mark1 FROM STUDENT45KA WHERE ROLL_NO=ROLL;
+SELECT MARK2  INTO mark2 FROM STUDENT45KA WHERE ROLL_NO=ROLL;
+SELECT MARK3 INTO mark3 FROM STUDENT45KA WHERE ROLL_NO=ROLL;
+TOT_MARKS:=mark1+mark2+mark3;
+if TOT_MARKS >=250 then
+ GRADE:='DISTINCTION';
+elsif TOT_MARKS>=180 AND TOT_MARKS<250 then
+ GRADE:='FIRST CLASS';
+elsif TOT_MARKS>=120 AND TOT_MARKS<180 then
+ GRADE:='SECOND CLASS';
+elsif TOT_MARKS>=80 AND TOT_MARKS<120 then
+ GRADE:='THIRD CLASS';
+end if;
+dbms_output.put_line('The Student records are');
+dbms_output.put_line('STUDENT_NAME:'||Name);
+dbms_output.put_line('ROLL NO:'||ROLL);
+dbms_output.put_line('TOTAL MARKS:'||TOT_MARKS);
+dbms_output.put_line('GRADE:'||GRADE);
+end;
+
+
+
+**************************************************
+OUTPUT
+
+SELECT * FROM STUDENT45KA;
+
+NAME                    ROLL_NO      MARK1      MARK2      MARK3
+-------------------- ---------- ---------- ---------- ----------
+Rana                         18         29         42         49
+
+
+Enter value for roll: 18
+old  10: ROLL:=&ROLL;
+new  10: ROLL:=18;
+The Student records are
+STUDENT_NAME:Rana
+ROLL NO:18
+TOTAL MARKS:120
+GRADE:SECOND CLASS
+
+PL/SQL procedure successfully completed.
+

@@ -1,0 +1,111 @@
+CREATE TABLE ACCTMASTER45(ACCNO VARCHAR(10) PRIMARY KEY,NAME VARCHAR(20),BALANCE NUMBER(20));
+Table created.
+INSERT INTO ACCTMASTER45(ACCNO,NAME,BALANCE) VALUES('&ACCNO','&NAME',&BALANCE);
+
+CREATE TABLE ACCTTRAN45(ACCNOS VARCHAR(10) REFERENCES ACCTMASTER45,TRANSACTION_DATE DATE,DEB_CRED VARCHAR(10),AMOUNT NUMBER(20),PROCESSED VARCHAR(10));
+
+Table created.
+
+INSERT INTO ACCTTRAN45(ACCNOS,TRANSACTION_DATE,DEB_CRED,AMOUNT,PROCESSED) VALUES('&ACCNOS',DATE '&TRANSACTION_DATE','&DEB_CRED',&AMOUNT,'&PROCESSED');
+
+set serveroutput on;
+declare 
+cursor c1 is select ACCNOS,DEB_CRED,AMOUNT,PROCESSED FROM ACCTTRAN45;
+
+n1 VARCHAR(20);
+n2 VARCHAR(20);
+n3 NUMBER(20);
+n4 VARCHAR(20);
+B1 NUMBER(20);
+
+
+begin
+
+open c1;
+
+
+loop
+
+fetch c1 into n1,n2,n3,n4;
+
+exit when c1%notfound;
+SELECT BALANCE INTO B1 FROM ACCTMASTER45 WHERE ACCNO=n1;
+
+if n2='DEBIT' then
+	if n4='NO' then
+		UPDATE ACCTMASTER45 SET BALANCE=B1-n3 WHERE ACCNO=n1;
+		UPDATE ACCTTRAN45 SET PROCESSED='YES' WHERE ACCNOS=n1;
+	end if;
+
+else
+	if n4='NO' then
+		UPDATE ACCTMASTER45 SET BALANCE=B1+n3 WHERE ACCNO=n1;
+		UPDATE ACCTTRAN45 SET PROCESSED='YES' WHERE ACCNOS=n1;
+	end if;
+
+end if;
+
+end loop;
+close c1;
+end;
+
+
+		
+		
+	
+
+
+
+OUTPUT
+
+//BEFORE
+SQL> select * from ACCTMASTER45;
+
+ACCNO      NAME                    BALANCE
+---------- -------------------- ----------
+1          Ravi                      90000
+2          Bruno                     30000
+3          Blast Mohan              240000
+4          nAV                      105000
+
+SQL> SELECT * FROM ACCTTRAN45;
+
+ACCNOS     TRANSACTI DEB_CRED       AMOUNT PROCESSED
+---------- --------- ---------- ---------- ----------
+1          01-MAY-23 DEBIT           25000 YES
+2          02-JAN-23 DEBIT           30000 NO
+3          09-JAN-23 CREDIT          20000 NO
+4          01-MAR-23 DEBIT           15000 NO
+
+
+
+//AFTER
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM ACCTTRAN45;
+
+ACCNOS     TRANSACTI DEB_CRED       AMOUNT PROCESSED
+---------- --------- ---------- ---------- ----------
+1          01-MAY-23 DEBIT           25000 YES
+2          02-JAN-23 DEBIT           30000 YES
+3          09-JAN-23 CREDIT          20000 YES
+4          01-MAR-23 DEBIT           15000 YES
+
+SQL> select * from ACCTMASTER45;
+
+ACCNO      NAME                    BALANCE
+---------- -------------------- ----------
+1          Ravi                      90000
+2          Bruno                         0
+3          Blast Mohan              260000
+4          nAV                       90000
+
+
+
+
+
+
+
+
+
+

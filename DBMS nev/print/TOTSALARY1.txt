@@ -1,0 +1,95 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>ROLLBACK AND SAVEPOINT
+
+
+
+
+
+CREATE TABLE EMPLOYEE45RT(ENO NUMBER(05),ENAME VARCHAR(20),SALARY NUMBER(30));
+Table created.
+INSERT INTO EMPLOYEE45RT(ENO,ENAME,SALARY) VALUES(1,'A',20000);
+INSERT INTO EMPLOYEE45RT(ENO,ENAME,SALARY) VALUES(2,'B',40000);
+INSERT INTO EMPLOYEE45RT(ENO,ENAME,SALARY) VALUES(3,'C',50000);
+
+
+
+set serveroutput on;
+
+
+declare
+
+
+enumber NUMBER(20);
+SALTOTAL NUMBER(20);
+
+begin
+
+
+savepoint sp;
+
+UPDATE EMPLOYEE45RT SET SALARY=SALARY+SALARY*.20 WHERE ENO=1;
+
+
+UPDATE EMPLOYEE45RT SET SALARY=SALARY+SALARY*.20 WHERE ENO=2;
+
+UPDATE EMPLOYEE45RT SET SALARY=SALARY+SALARY*.20 WHERE ENO=3;
+
+SELECT SUM(SALARY) INTO SALTOTAL FROM EMPLOYEE45RT;
+
+if SALTOTAL > 100000 then
+ 	dbms_output.put_line('Roll back success!!!');
+	rollback to sp;
+
+else
+  dbms_output.put_line('The Program has been successfully updated!!!');
+  commit;
+
+end if;
+
+end;
+
+OUTPUT
+
+//BEFORE
+1)
+SELECT * from EMPLOYEE45RT;
+
+  ENO ENAME                    SALARY
+----- -------------------- ----------
+    1 A                         20000
+    2 B                         40000
+    3 C                         50000
+
+
+//AFTER
+
+1)
+Roll back success!!!
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> select * from EMPLOYEE45RT;
+
+       ENO ENAME                    SALARY
+---------- -------------------- ----------
+         1 A                         20000
+         2 B                         40000
+         3 C                         50000
+
+
+
+	
+
+
+
+
+
+
+
+
+

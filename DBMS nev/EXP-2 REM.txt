@@ -1,0 +1,147 @@
+CREATE TABLE DEPARTMENT327(DNO varchar(5) PRIMARY KEY,DNAME varchar(20) NOT NULL,CNT_EMP number(5) CHECK(CNT_EMP<=15),DEPT_HOD varchar(20));
+Table created.
+
+CREATE TABLE EMPLOYEE327(ENO varchar(3) PRIMARY KEY,ENAME varchar(20) NOT NULL,SALARY number(20) CHECK(SALARY!=0),DNO VARCHAR(3) REFERENCES DEPARTMENT327(DNO),MNGRNO number(3),DOJ DATE,JOB varchar(20),ADDRESS varchar(20),CITY varchar(20) CHECK(CITY IN('COCHIN','BOMBAY','MADRAS','DELHI')),PINCODE number(6));
+Table created.
+
+INSERT INTO EMPLOYEE327 VALUES('&ENO','&ENAME',&SALARY,'&DNO',&MNGRNO,DATE '&DOJ','&JOB','&ADDRESS','&CITY',&PINCODE);
+
+INSERT INTO DEPARTMENT327 VALUES('&DNO','&DNAME',&CNT_EMP,'&DEPT_HOD');
+
+SELECT * FROM EMPLOYEE327;
+SQL> SELECT * FROM EMPLOYEE327;
+ENO ENAME                    SALARY DNO     MNGRNO DOJ       JOB                  ADDRESS              CITY                    PINCODE
+--- -------------------- ---------- --- ---------- --------- -------------------- ------------------
+e30 Nevin                     30000 d30         34 03-MAY-20 Gold Mine            Kalampur             DELHI                     11111
+e31 Karthik                   23000 d30         35 02-MAR-19 Keguva               MADRAS               MADRAS                    19999
+e10 JUDI                      39000 d30         56 02-SEP-99 Race                 Kls                  COCHIN                    19911
+e13 Alexo                     20000 d10         20 01-MAR-00 Banana FARM          Kothanad             MADRAS                   100011
+e22 Ariel                     25000 d10         22 01-SEP-19 FARMING              Alappey              COCHIN                   190000
+e3  poly                      20000 d1          20 01-JAN-02 check                North paras          DELHI                     12233
+e9  ENOPS                     19000 d10            01-JAN-23 Farmland             Koss                 DELHI                     11111
+
+
+SELECT * FROM DEPARTMENT327;
+DNO   DNAME                   CNT_EMP DEPT_HOD
+----- -------------------- ---------- --------------------
+d30   CSE                          14 Kalvin
+d10   CBC                          12 OPSE
+d1    sales                         9 opseq
+
+
+A)SELECT ENAME FROM EMPLOYEE327 WHERE DOJ>'01-JANUARY-98' AND DNO='d10';
+
+SQL> SELECT ENAME FROM EMPLOYEE327 WHERE DOJ>'01-JANUARY-98' AND DNO='d10';
+
+
+ENAME
+--------------------
+Alexo
+Ariel
+ENOPS
+
+
+
+B)SELECT ENAME FROM EMPLOYEE327 WHERE DNO!='d30';
+
+
+ENAME
+--------------------
+Alexo
+Ariel
+poly
+ENOPS
+
+C)SELECT ENAME FROM EMPLOYEE327 WHERE DNO IN(SELECT DNO FROM DEPARTMENT WHERE DNAME='sales');
+
+ENAME
+--------------------
+poly
+
+D)SELECT ENAME FROM EMPLOYEE327 WHERE MNGRNO IS NULL;
+
+ENAME
+--------------------
+ENOPS
+
+E)SELECT ENAME FROM EMPLOYEE327 WHERE ENAME LIKE 'J_N%';
+
+ENAME
+--------------------
+KOLN
+
+F)SELECT ENAME FROM EMPLOYEE327 WHERE DOJ LIKE '%00';
+ENAME
+--------------------
+Alexo
+
+G)SELECT 'Every'||' Year '||ENAME||' earns '||SALARY FROM EMPLOYEE327;
+Every Year Nevin earns 30000
+Every Year Karthik earns 23000
+Every Year JUDI earns 39000
+Every Year Alexo earns 20000
+Every Year Ariel earns 25000
+Every Year poly earns 20000
+Every Year ENOPS earns 19000
+Every Year KOLN earns 10000
+Every Year Jackson earns 20000
+
+H)SELECT COUNT(*) AS TOTAL_EMPLOYEE FROM EMPLOYEE327;
+  TOTAL_EMPLOYEE
+----------
+         8
+
+I)SELECT JOB,MIN(SALARY) FROM EMPLOYEE327 GROUP BY JOB;
+JOB                  MIN(SALARY)
+-------------------- -----------
+Banana FARM                20000
+FARMING                    25000
+Farmland                   19000
+Gold Mine                  30000
+KOL                        10000
+Keguva                     23000
+Race                       39000
+check                      20000
+
+8 rows selected.
+
+J)SELECT D.DNAME,E.JOB,MIN(E.SALARY) FROM EMPLOYEE327 E JOIN DEPARTMENT327 D ON E.DNO=D.DNO WHERE E.SALARY>7000 GROUP BY D.DNAME,E.JOB;
+DNAME                JOB                  MIN(E.SALARY)
+-------------------- -------------------- -------------
+CBC                  KOL                          10000
+CBC                  FARMING                      25000
+CBC                  Farmland                     19000
+CBC                  Banana FARM                  20000
+CSE                  Race                         39000
+CSE                  Keguva                       23000
+CSE                  Gold Mine                    30000
+sales                check                        20000
+
+
+K)SELECT D.DNAME,MIN(E.SALARY) FROM EMPLOYEE327 E JOIN DEPARTMENT327 D ON E.DNO=D.DNO WHERE E.JOB='MANAGER' GROUP BY D.DNAME;
+DNAME                MIN(E.SALARY)
+-------------------- -------------
+CSE                          20000
+
+L)SELECT E.ENAME,D.DNAME FROM EMPLOYEE327 E JOIN DEPARTMENT327 D ON E.DNO=D.DNO WHERE JOB='check';
+
+ENAME                DNAME
+-------------------- --------------------
+poly                 sales
+
+M)SELECT ENAME,DOJ FROM EMPLOYEE327;
+ENAME                DOJ
+-------------------- ---------
+Nevin                03-MAY-20
+Karthik              02-MAR-19
+JUDI                 02-SEP-99
+Alexo                01-MAR-00
+Ariel                01-SEP-19
+poly                 01-JAN-02
+ENOPS                01-JAN-23
+KOLN                 01-MAR-72
+Jackson              03-MAY-92
+
+9 rows selected.
+
+

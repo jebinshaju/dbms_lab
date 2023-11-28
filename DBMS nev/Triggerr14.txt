@@ -1,0 +1,70 @@
+CREATE TABLE PRODUCT_MASTER(PNO NUMBER(10) PRIMARY KEY,DESCRIPTION VARCHAR(10),PROFIT_PERCENT NUMBER(10),QTY_ON_HAND NUMBER(10),RECORDERLEVEL NUMBER(10),SELLPRICE NUMBER(10));
+
+CREATE OR REPLACE TRIGGER TKO BEFORE INSERT OR UPDATE ON PRODUCT_MASTER FOR EACH ROW
+declare
+
+
+
+begin
+if inserting then
+
+if :new.QTY_ON_HAND<0 then
+	raise_application_error(-20001,':new.QTY_ON_HAND<0');
+end if;
+
+end if;
+
+if updating then
+
+if :new.QTY_ON_HAND<0 then 
+	raise_application_error(-20001,':new.QTY_ON_HAND<0');
+end if; 
+end if;
+	
+
+
+end;
+
+OUTPUT
+//INSERT
+
+INSERT INTO PRODUCT_MASTER(PNO,DESCRIPTION,PROFIT_PERCENT,QTY_ON_HAND,RECORDERLEVEL,SELLPRICE) VALUES(1,'New Item',20,-3,4,200);
+            *
+ERROR at line 1:
+ORA-20001: :new.QTY_ON_HAND<0
+ORA-06512: at "STUDENT.TKO", line 9
+ORA-04088: error during execution of trigger 'STUDENT.TKO'
+
+INSERT INTO PRODUCT_MASTER(PNO,DESCRIPTION,PROFIT_PERCENT,QTY_ON_HAND,RECORDERLEVEL,SELLPRICE) VALUES(1,'New Item',20,5,4,200);
+1 row created.
+
+SQL> SELECT * FROM PRODUCT_MASTER;
+
+       PNO DESCRIPTIO PROFIT_PERCENT QTY_ON_HAND RECORDERLEVEL  SELLPRICE
+---------- ---------- -------------- ----------- ------------- ----------
+         1 New Item               20           5             4        200
+
+
+//UPDATE
+
+UPDATE PRODUCT_MASTER SET QTY_ON_HAND=-1 WHERE PNO=1
+       *
+ERROR at line 1:
+ORA-20001: :new.QTY_ON_HAND<0
+ORA-06512: at "STUDENT.TKO", line 17
+ORA-04088: error during execution of trigger 'STUDENT.TKO'
+
+UPDATE PRODUCT_MASTER SET QTY_ON_HAND=8 WHERE PNO=1
+1 row updated.
+
+SQL> SELECT * FROM PRODUCT_MASTER;
+
+       PNO DESCRIPTIO PROFIT_PERCENT QTY_ON_HAND RECORDERLEVEL  SELLPRICE
+---------- ---------- -------------- ----------- ------------- ----------
+         1 New Item               20           8             4        200
+
+
+
+
+
+

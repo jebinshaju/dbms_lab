@@ -1,0 +1,107 @@
+*************************************************
+NAME  :Nevin Thomas Kovoor
+ROLL  :45
+CLASS :S5 CSE-B
+**************************************************
+>>ELECTRICITY BILL GENERATION
+
+
+CREATE TABLE ELEC_BILL45(CONSUMER_NO NUMBER(20),PAST_READING NUMBER(20));
+Table created.
+INSERT INTO ELEC_BILL45(CONSUMER_NO,PAST_READING) VALUES(250,1000);
+
+SELECT * FROM ELEC_BILL45;
+
+CONSUMER_NO PAST_READING
+----------- ------------
+        250         1000
+
+
+
+set serveroutput on;
+
+declare
+
+Consumer_Number NUMBER(20);
+Present_Reading NUMBER(20);
+Units_Taken NUMBER(20);
+CHARGE NUMBER(20);
+PST NUMBER(20);
+Past_Reading NUMBER(20);
+
+begin
+Consumer_Number:=&Consumer_Number;
+Present_Reading:=&Present_Reading;
+
+
+
+SELECT PAST_READING INTO Past_Reading FROM ELEC_BILL45 WHERE CONSUMER_NO=Consumer_Number;
+
+
+Units_Taken:=Present_Reading-Past_Reading;
+
+ if Units_Taken<20 then
+	CHARGE:=0;
+ elsif Units_Taken>=30 and Units_Taken<=100 then
+	CHARGE:=.50*Units_Taken;
+ elsif Units_Taken>=101 and Units_Taken<=300 then
+	CHARGE:=.75*Units_Taken;
+ elsif Units_Taken>=301 and Units_Taken<=500 then
+	CHARGE:=1.50*Units_Taken;
+ else
+ 	CHARGE:=2.25*Units_Taken;
+
+ end if;
+
+UPDATE ELEC_BILL45 SET PAST_READING=Present_Reading;
+
+ 
+
+
+dbms_output.put_line('THE ELECTRICITY BILL IS');
+dbms_output.put_line('CONSUMER NUMBER:'||Consumer_Number);
+dbms_output.put_line('PRESENT READING:'||Present_Reading);
+dbms_output.put_line('PAST READING:'||Past_Reading);
+dbms_output.put_line('UNITS TAKEN:'||Units_Taken);
+dbms_output.put_line('CHARGE:'||CHARGE);
+
+end;
+
+
+
+
+
+
+**************************************************
+OUTPUT
+
+SELECT * FROM ELEC_BILL45;
+
+CONSUMER_NO PAST_READING
+----------- ------------
+        250         1500
+
+
+
+Enter value for consumer_number: 234
+old  10: Consumer_Number:=&Consumer_Number;
+new  10: Consumer_Number:=234;
+THE ELECTRICITY BILL IS
+CONSUMER NUMBER:234
+PRESENT READING:410
+PAST READING:210
+UNITS TAKEN:200
+CHARGE:150
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+
+
+
+
