@@ -1463,14 +1463,14 @@ insert into acctran50 (accno,transactiondate,deb_cred,amount,processed) values (
 
 
 
-SQL>  select * from acctmaster50;
+SQL> select * from acctmaster50;
 
      ACCNO NAME                    BALANCE
 ---------- -------------------- ----------
-        10 tony                       7219
-        11 kurian                     4700
-        12 mathai                    10255
-        13 varkey                     9536
+        10 tony                       7532
+        11 kurian                     4000
+        12 mathai                     9955
+        13 varkey                     9336
 
 
 
@@ -1506,9 +1506,12 @@ loop
 	if pro = 'no' then
 		if deb = 'credit' then
 			update acctmaster50 set balance = balance + amo where accno = acc;
+			update acctran50 set processed ='yes' where accno = acc;
+
 
 		else 
 			update acctmaster50 set balance = balance - amo where accno = acc;
+			update acctran50 set processed ='yes' where accno = acc;
 
 		end if;
 	end if;
@@ -1519,9 +1522,528 @@ SQL> select * from acctmaster50;
 
      ACCNO NAME                    BALANCE
 ---------- -------------------- ----------
-        10 tony                       8119
-        11 kurian                     5300
-        12 mathai                    10255
-        13 varkey                     9536
+        10 tony                       8432
+        11 kurian                     4600
+        12 mathai                     9955
+        13 varkey                     9336
 
 
+SQL> select * from acctran50;
+
+     ACCNO TRANSACTI DEB_CR     AMOUNT PROC
+---------- --------- ------ ---------- ----
+        12 01-JAN-23 credit        300 yes
+        10 04-FEB-23 debit         313 yes
+        11 06-JAN-23 credit        600 yes
+        11 21-MAR-23 credit        700 yes
+        10 16-JAN-23 credit        900 yes
+        13 14-JAN-23 credit        200 yes
+
+
+
+
+CREATE TABLE EMPLOYEE50(EMPLOYEEID NUMBER(20),ENAME VARCHAR(20),SALARY NUMBER(20),JOB VARCHAR(20));
+Table created.
+
+INSERT INTO EMPLOYEE50(EMPLOYEEID,ENAME,SALARY,JOB) VALUES(1,'renjith',25000,'Mechanic');
+1 row created.
+INSERT INTO EMPLOYEE50(EMPLOYEEID,ENAME,SALARY,JOB) VALUES(2,'Jose',20000,'Plumber');
+1 row created.
+INSERT INTO EMPLOYEE50(EMPLOYEEID,ENAME,SALARY,JOB) VALUES(3,'vikram Ramdas',200000,'Driver');
+1 row created.
+
+
+CREATE OR REPLACE FUNCTION SALARY(n in NUMBER)
+
+return NUMBER as
+
+SAL NUMBER(20);
+
+begin
+
+SELECT SALARY INTO SAL FROM EMPLOYEE50 WHERE EMPLOYEEID=n;
+
+return SAL;
+
+end;
+
+set serveroutput on;
+declare
+ID NUMBER(20);
+SAL1 NUMBER(20);
+begin
+ID:=&ID;
+SAL1:=SALARY(ID);
+dbms_output.put_line('The salary of the corresponding employee '||ID||' is '||SAL1);
+end;
+
+
+OUTPUT
+
+select * from employee50;
+
+EMPLOYEEID ENAME                    SALARY JOB
+---------- -------------------- ---------- ----------------
+         1 renjith                   25000 Mechanic
+         2 Jose                      20000 Plumber
+         3 vikram Ramdas            200000 Driver
+
+
+
+
+
+Function created.
+
+Enter value for id: 3
+old   5: ID:=&ID;
+new   5: ID:=3;
+The salary of the corresponding employee 3 is 200000
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+
+CREATE OR REPLACE FUNCTION FACTORIAL50(n in NUMBER)
+
+return NUMBER as
+
+FACT NUMBER(20):=1;
+begin
+
+for i in 1..n loop
+FACT:=FACT*i;
+end loop;
+
+return FACT;
+
+end;
+
+
+set serveroutput on;
+
+declare
+N NUMBER(20);
+FACTS NUMBER(20); 
+
+begin
+N:=&N;
+
+FACTS:=FACTORIAL50(N);
+
+dbms_output.put_line('The factorial of the number is '||FACTS);
+
+
+end;
+
+
+Function created.
+
+OUTPUT
+
+Enter value for n: 5
+old   6: N:=&N;
+new   6: N:=5;
+The factorial of the number is 120
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+CREATE TABLE GRADE50(SID NUMBER(20),NAME VARCHAR(20),MARK1 NUMBER(20),MARK2 NUMBER(20),MARK3 NUMBER(20));
+
+INSERT INTO GRADE50(SID,NAME,MARK1,MARK2,MARK3) VALUES(1,'leo',33,33,33);
+1 row created.
+INSERT INTO GRADE50(SID,NAME,MARK1,MARK2,MARK3) VALUES(2,'basil',20,20,20);
+1 row created.
+INSERT INTO GRADE50(SID,NAME,MARK1,MARK2,MARK3) VALUES(3,'dan',10,10,10);
+1 row created.
+
+CREATE OR REPLACE PROCEDURE GRADEP50(n in NUMBER,grade out CHAR)
+AS
+
+T_MARKS NUMBER(20);
+
+M1 NUMBER(20);
+M2 NUMBER(20);
+M3 NUMBER(20);
+begin
+
+SELECT MARK1,MARK2,MARK3 INTO M1,M2,M3 FROM GRADE50 WHERE SID=n;
+
+T_MARKS:=M1+M2+M3;
+
+
+if T_MARKS>100 then
+
+grade:='A';
+
+elsif T_MARKS>=70 AND T_MARKS<100 then
+
+grade:='B';
+
+
+elsif T_MARKS>=50 AND T_MARKS<70 then
+
+grade:='C';
+
+elsif T_MARKS<50 then
+
+grade:='FAIL';
+
+end if;
+
+end;
+
+set serveroutput on;
+
+declare
+grade CHAR(20);
+
+ROLL_NO NUMBER(20);
+
+begin
+
+ROLL_NO:=&ROLL_NO;
+
+GRADEP50(ROLL_NO,grade);
+
+dbms_output.put_line('The Grade of the corresponding student is '||grade);
+
+end;
+
+
+OUTPUT
+SQL> select * from grade50;
+
+       SID NAME                      MARK1      MARK2      MARK3
+---------- -------------------- ---------- ---------- ----------
+         1 leo                          33         33         33
+         2 basil                        20         20         20
+         3 dan                          10         10         10
+
+
+Enter value for roll_no: 3
+old   8: ROLL_NO:=&ROLL_NO;
+new   8: ROLL_NO:=3;
+The Grade of the corresponding student is FAIL
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+
+
+CREATE TABLE TUP50(a NUMBER(10),b NUMBER(10));
+Table created.
+
+CREATE OR REPLACE TRIGGER T150 BEFORE INSERT OR UPDATE ON TUP50 FOR EACH ROW
+declare
+
+a1 NUMBER(10);
+b1 NUMBER(10);
+t NUMBER(10);
+
+begin
+t:=:new.a+:new.b;
+
+if inserting then
+if t<=75 then
+	raise_application_error(-20001,'a+b<=75');
+ 
+ end if;
+
+
+end if;
+
+if updating then
+ if :new.b<:old.b then
+	raise_application_error(-20001,':new.b<:old.b');
+
+
+ end if;
+
+
+end if;
+
+end;
+
+
+OUTPUT
+
+
+Trigger created.
+
+SQL> INSERT INTO TUP50(a,b) VALUES(30,46);
+
+1 row created.
+
+SQL> INSERT INTO TUP50(a,b) VALUES(180,100);
+
+1 row created.
+
+SQL> UPDATE TUP50 SET b=40 WHERE a=30;
+UPDATE TUP50 SET b=40 WHERE a=30
+       *
+ERROR at line 1:
+ORA-20001: :new.b<:old.b
+ORA-06512: at "STUDENT.T150", line 21
+ORA-04088: error during execution of trigger 'STUDENT.T150'
+
+
+SQL> UPDATE TUP50 SET b=58 WHERE a=30;
+
+1 row updated.
+
+SQL> select * from TUP50;
+
+         A          B
+---------- ----------
+        30         58
+       180        100
+
+
+
+
+
+
+
+
+CREATE TABLE PRODUCT_MASTER50(PNO NUMBER(10) PRIMARY KEY,DESCRIPTION VARCHAR(10),PROFIT_PERCENT NUMBER(10),QTY_ON_HAND NUMBER(10),RECORDERLEVEL NUMBER(10),SELLPRICE NUMBER(10));
+
+CREATE OR REPLACE TRIGGER TK51 BEFORE INSERT OR UPDATE ON PRODUCT_MASTER50 FOR EACH ROW
+declare
+
+
+
+begin
+if inserting then
+
+if :new.QTY_ON_HAND<0 then
+	raise_application_error(-20001,':new.QTY_ON_HAND<0');
+end if;
+
+end if;
+
+if updating then
+
+if :new.QTY_ON_HAND<0 then 
+	raise_application_error(-20001,':new.QTY_ON_HAND<0');
+end if; 
+end if;
+	
+
+
+end;
+
+OUTPUT
+//INSERT
+
+
+SQL> INSERT INTO PRODUCT_MASTER50(PNO,DESCRIPTION,PROFIT_PERCENT,QTY_ON_HAND,RECORDERLEVEL,SELLPRICE
+) VALUES(1,'fan',21,-3,4,200);
+INSERT INTO PRODUCT_MASTER50(PNO,DESCRIPTION,PROFIT_PERCENT,QTY_ON_HAND,RECORDERLEVEL,SELLPRICE) VAL
+            *
+ERROR at line 1:
+ORA-20001: :new.QTY_ON_HAND<0
+ORA-06512: at "STUDENT.TK51", line 9
+ORA-04088: error during execution of trigger 'STUDENT.TK51'
+
+
+SQL> INSERT INTO PRODUCT_MASTER50(PNO,DESCRIPTION,PROFIT_PERCENT,QTY_ON_HAND,RECORDERLEVEL,SELLPRICE
+) VALUES(1,'fan',20,5,4,200);
+
+1 row created.
+
+SQL> SELECT * FROM PRODUCT_MASTER50;
+
+       PNO DESCRIPTIO PROFIT_PERCENT QTY_ON_HAND RECORDERLEVEL  SELLPRICE
+---------- ---------- -------------- ----------- ------------- ----------
+         1 fan                    20           5             4        200
+
+ 
+SQL> UPDATE PRODUCT_MASTER50 SET QTY_ON_HAND=-1 WHERE PNO=1;
+UPDATE PRODUCT_MASTER50 SET QTY_ON_HAND=-1 WHERE PNO=1
+       *
+ERROR at line 1:
+ORA-20001: :new.QTY_ON_HAND<0
+ORA-06512: at "STUDENT.TK51", line 17
+ORA-04088: error during execution of trigger 'STUDENT.TK51'
+
+
+SQL> UPDATE PRODUCT_MASTER50 SET QTY_ON_HAND=8 WHERE PNO=1;
+
+1 row updated.
+
+
+
+
+
+
+
+
+
+
+create or replace procedure small(a in number,b in number,c in number, s out number)
+as
+begin
+if a<b then
+if a<c then
+s:= a;
+else
+s:=c;
+end if;
+elsif b<a then
+if b<c then
+s:=b;
+else 
+s:=c;
+end if;
+else
+s:=c;
+end if;
+end;
+/
+
+
+create or replace procedure large(a in number,b in number,c in number, s out number)
+as
+begin
+if a>b then
+if a>c then
+s:= a;
+else
+s:=c;
+end if;
+elsif b>a then
+if b>c then
+s:=b;
+else 
+s:=c;
+end if;
+else
+s:=c;
+end if;
+end;
+/
+
+
+set serveroutput on;
+declare
+a number(10);
+b number(10);
+c number(10);
+l number(10);
+s number(10);
+
+begin
+a:=&a;
+b:=&b;
+c:=&c;
+small(a,b,c,s);
+large(a,b,c,l);
+
+dbms_output.put_line('smallest '||s);
+dbms_output.put_line('largest '||l);
+
+end;
+/
+
+
+
+Enter value for a: 12
+old   9: a:=&a;
+new   9: a:=12;
+Enter value for b: 34
+old  10: b:=&b;
+new  10: b:=34;
+Enter value for c: 3
+old  11: c:=&c;
+new  11: c:=3;
+smallest 3
+largest 34
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+create table TT150(rollno number(10) primary key,univ_mark number(5),sessionals number(5));
+insert into TT150 values(&roll_no,&univ_mark,&sessionals);
+select * from TT150;
+
+create table TT250(rollno number(10) primary key,univ_mark number(5),sessionals number(5));
+select * from TT250;
+
+set serveroutput on;
+declare
+s number(5);
+u number(5);
+r number(10);
+d number(5);
+cursor st is select * from TT150;
+begin
+open st;
+loop
+fetch st into r,u,s;
+exit when st%notfound;
+if s<35 and s>=30 then
+d:=35-s;
+s:=35;
+dbms_output.put_line('Sessionals of '||r||' increased by '||d||' to make 35');
+update TT150 set sessionals=35 where rollno=r;
+end if;
+if (u+s)>75 then
+insert into TT250 values(r,u,s);
+end if;
+end loop;
+close st;
+end;
+/
+
+ OUTPUT
+********
+
+SQL> select * from TT150;
+
+    ROLLNO  UNIV_MARK SESSIONALS
+---------- ---------- ----------
+         1         55         50
+         2         38         30
+         3         54         40
+
+
+
+Sessionals of 2 increased by 5 to make 35
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from TT250;
+
+    ROLLNO  UNIV_MARK SESSIONALS
+---------- ---------- ----------
+         1         55         50
+         3         54         40
+
+SQL> select * from TT150;
+
+    ROLLNO  UNIV_MARK SESSIONALS
+---------- ---------- ----------
+         1         55         50
+         2         38         35
+         3         54         40
